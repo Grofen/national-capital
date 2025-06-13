@@ -5,17 +5,12 @@ import {
   title as defaultTitle,
 } from "@/sanity/lib/demo";
 
-// import Banner from "../components/Banner";
-// Import components from main layout
 import DraftModeToast from "@/app/components/DraftModeToast";
-import Footer from "@/app/components/Footer";
-import Header from "@/app/components/Header";
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
 import { SanityLive } from "@/sanity/lib/live";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
-// import { TranslationProvider } from "@/app/contexts/TranslationContext";
+import { cn } from "@/app/utils/cn";
 import { draftMode } from "next/headers";
 import { handleError } from "@/app/client-utils";
 import { notFound } from "next/navigation";
@@ -84,12 +79,6 @@ export async function generateMetadata({
   };
 }
 
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 export default async function LocaleLayout({
   children,
   params,
@@ -135,27 +124,20 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${outfit.variable} bg-white text-black h-full ${direction}`}
+      className={cn("h-full bg-neutral-950 text-base antialiased", direction)}
       dir={direction}
     >
-      <body className="h-full flex flex-col">
+      <body className="flex min-h-full flex-col">
         <NextIntlClientProvider locale={locale}>
-          {/* <TranslationProvider> */}
-          <section className="flex flex-col flex-grow">
-            <Toaster />
-            {isDraftMode && (
-              <>
-                <DraftModeToast />
-                <VisualEditing />
-              </>
-            )}
-            <SanityLive onError={handleError} />
-            {/* {header && <Header {...(header as any)} />} */}
-            {/* <Banner settings={settings as any} /> */}
-            <main className="flex-grow flex flex-col">{children}</main>
-            {/* {footer && <Footer {...(footer as any)} />} */}
-          </section>
-          {/* </TranslationProvider> */}
+          <Toaster />
+          {isDraftMode && (
+            <>
+              <DraftModeToast />
+              <VisualEditing />
+            </>
+          )}
+          <SanityLive onError={handleError} />
+          <main className="flex-grow flex flex-col">{children}</main>
         </NextIntlClientProvider>
         <SpeedInsights />
       </body>

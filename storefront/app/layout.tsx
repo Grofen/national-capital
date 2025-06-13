@@ -1,4 +1,4 @@
-import "./globals.css";
+import "./styles/globals.css";
 
 import * as demo from "@/sanity/lib/demo";
 
