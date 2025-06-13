@@ -101,6 +101,9 @@ export default async function LocaleLayout({
   const resolvedParams = await params;
   const locale = resolvedParams.locale;
 
+  // Manually set direction based on locale (Arabic is RTL)
+  const direction = locale === "ar" ? "rtl" : "ltr";
+
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
@@ -132,7 +135,8 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${outfit.variable} bg-white text-black h-full`}
+      className={`${outfit.variable} bg-white text-black h-full ${direction}`}
+      dir={direction}
     >
       <body className="h-full flex flex-col">
         <NextIntlClientProvider locale={locale}>
