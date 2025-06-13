@@ -1,5 +1,5 @@
 {
-  "name": "starter-template",
+  "name": "national-capital-studio",
   "private": true,
   "version": "1.0.0",
   "main": "package.json",
@@ -32,7 +32,7 @@
   "devDependencies": {
     "@sanity/eslint-config-studio": "^5.0.2",
     "@types/react": "^18.3.12",
-    "eslint": "^9.9.0",
+    "eslint": "^9.28.0",
     "prettier": "^3.3.3",
     "typescript": "^5.8.3"
   },
