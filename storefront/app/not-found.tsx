@@ -1,6 +1,6 @@
 import { Container } from "@/app/components/Container";
 import { FadeIn } from "@/app/components/FadeIn";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 export default function NotFound() {
   return (

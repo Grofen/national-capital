@@ -56,7 +56,7 @@ export default async function Page(props: Props) {
     }),
   ]);
 
-  if (!page?._id) {
+  if (!page) {
     return notFound();
   }
 

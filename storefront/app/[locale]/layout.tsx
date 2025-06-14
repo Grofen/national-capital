@@ -5,6 +5,7 @@ import {
   title as defaultTitle,
 } from "@/sanity/lib/demo";
 
+import { RootLayout as AppRootLayout } from "@/app/components/RootLayout";
 import DraftModeToast from "@/app/components/DraftModeToast";
 import type { Metadata } from "next";
 import { SanityLive } from "@/sanity/lib/live";
@@ -137,7 +138,7 @@ export default async function LocaleLayout({
             </>
           )}
           <SanityLive onError={handleError} />
-          <main className="flex-grow flex flex-col">{children}</main>
+          <AppRootLayout>{children}</AppRootLayout>
         </NextIntlClientProvider>
         <SpeedInsights />
       </body>

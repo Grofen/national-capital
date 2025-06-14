@@ -1,13 +1,12 @@
 "use client";
 
-import { SanityDocument } from "next-sanity";
-import { useOptimistic } from "next-sanity/hooks";
-import Link from "next/link";
-
 import BlockRenderer from "@/app/components/BlockRenderer";
 import { GetPageQueryResult } from "@/sanity.types";
+import { Link } from "@/i18n/navigation";
+import { SanityDocument } from "next-sanity";
 import { dataAttr } from "@/sanity/lib/utils";
 import { studioUrl } from "@/sanity/lib/api";
+import { useOptimistic } from "next-sanity/hooks";
 
 type PageBuilderPageProps = {
   page: GetPageQueryResult;
@@ -30,7 +29,7 @@ type PageData = {
 
 function renderSections(
   pageBuilderSections: PageBuilderSection[],
-  page: GetPageQueryResult,
+  page: GetPageQueryResult
 ) {
   if (!page) {
     return null;
@@ -100,7 +99,7 @@ export default function PageBuilder({ page }: PageBuilderPageProps) {
       // Reconcile References. https://www.sanity.io/docs/enabling-drag-and-drop#ffe728eea8c1
       return action.document.pageBuilder.map(
         (section) =>
-          currentSections?.find((s) => s._key === section?._key) || section,
+          currentSections?.find((s) => s._key === section?._key) || section
       );
     }
 
