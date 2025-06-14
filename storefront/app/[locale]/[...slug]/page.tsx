@@ -8,7 +8,7 @@ import {
   pagesSlugsForStaticGeneration,
 } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
-import { PageOnboarding } from "@/app/components/Onboarding";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: Promise<{ locale: string; slug: string[] }>;
@@ -57,11 +57,7 @@ export default async function Page(props: Props) {
   ]);
 
   if (!page?._id) {
-    return (
-      <div className="py-40">
-        <PageOnboarding />
-      </div>
-    );
+    return notFound();
   }
 
   return (
