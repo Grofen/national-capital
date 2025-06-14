@@ -9,7 +9,7 @@ import { sitemapData } from "@/sanity/lib/queries";
  */
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const allPostsAndPages = await sanityFetch({
+  const allPages = await sanityFetch({
     query: sitemapData,
   });
   const headersList = await headers();
@@ -22,33 +22,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "monthly",
   });
 
-  if (allPostsAndPages != null && allPostsAndPages.data.length != 0) {
-    let priority: number;
-    let changeFrequency:
-      | "monthly"
-      | "always"
-      | "hourly"
-      | "daily"
-      | "weekly"
-      | "yearly"
-      | "never"
-      | undefined;
-    let url: string;
-
-    for (const p of allPostsAndPages.data) {
+  if (allPages != null && allPages.data.length != 0) {
+    for (const p of allPages.data) {
       switch (p._type) {
         case "page":
-          priority = 0.8;
-          changeFrequency = "monthly";
-          url = `${domain}/${p.slug}`;
+          const priority = 0.8;
+          const changeFrequency = "monthly";
+          const url = `${domain}/${p.slug}`;
+          sitemap.push({
+            lastModified: p._updatedAt || new Date(),
+            priority,
+            changeFrequency,
+            url,
+          });
           break;
       }
-      sitemap.push({
-        lastModified: p._updatedAt || new Date(),
-        priority,
-        changeFrequency,
-        url,
-      });
     }
   }
 

@@ -1,7 +1,8 @@
-import createImageUrlBuilder from "@sanity/image-url";
-import { Link } from "@/sanity.types";
+import { CreateDataAttributeProps, createDataAttribute } from "next-sanity";
 import { dataset, projectId, studioUrl } from "@/sanity/lib/api";
-import { createDataAttribute, CreateDataAttributeProps } from "next-sanity";
+
+import { Link } from "@/sanity.types";
+import createImageUrlBuilder from "@sanity/image-url";
 
 const imageBuilder = createImageUrlBuilder({
   projectId: projectId || "",
@@ -24,7 +25,7 @@ export function resolveOpenGraphImage(image: any, width = 1200, height = 627) {
   return { url, alt: image?.alt as string, width, height };
 }
 
-// Depending on the type of link, we need to fetch the corresponding page, post, or URL.  Otherwise return null.
+// Depending on the type of link, we need to fetch the corresponding page or URL.  Otherwise return null.
 export function linkResolver(link: Link | undefined) {
   if (!link) return null;
 
@@ -39,10 +40,6 @@ export function linkResolver(link: Link | undefined) {
     case "page":
       if (link?.page && typeof link.page === "string") {
         return `/${link.page}`;
-      }
-    case "post":
-      if (link?.post && typeof link.post === "string") {
-        return `/posts/${link.post}`;
       }
     default:
       return null;
