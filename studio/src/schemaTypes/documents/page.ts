@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import {SlugValue, ValidationContext, defineField, defineType} from 'sanity'
 
 import {DocumentIcon} from '@sanity/icons'
 
@@ -32,7 +32,16 @@ export const page = defineType({
       name: 'slug',
       title: 'Slug',
       type: 'languageSlug',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required()
+          .error('Slug is required')
+          .custom((value: SlugValue | undefined, context: ValidationContext) => {
+            // if the first char is / return an error
+            if (value?.current?.startsWith('/') && value?.current !== '/') {
+              return 'The slug cannot start with a /'
+            }
+            return true
+          }),
     }),
     defineField({
       name: 'pageBuilder',
