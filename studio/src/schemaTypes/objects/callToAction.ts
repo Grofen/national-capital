@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+
 import {BulbOutlineIcon} from '@sanity/icons'
 
 /**
@@ -22,17 +23,6 @@ export const callToAction = defineType({
     }),
   fields: [
     defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'text',
-      title: 'Text',
-      type: 'text',
-    }),
-    defineField({
       name: 'buttonText',
       title: 'Button text',
       type: 'string',
@@ -45,7 +35,7 @@ export const callToAction = defineType({
   ],
   preview: {
     select: {
-      title: 'heading',
+      title: 'buttonText',
     },
     prepare(selection) {
       const {title} = selection

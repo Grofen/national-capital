@@ -1,5 +1,7 @@
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
+import {BulbOutlineIcon} from '@sanity/icons'
+
 /**
  * This is the schema definition for the rich text fields used for
  * for this blog studio. When you import it in schemas.js it can be
@@ -76,6 +78,12 @@ export const blockContent = defineType({
           },
         ],
       },
+    }),
+    defineArrayMember({
+      name: 'cta',
+      type: 'callToAction',
+      title: 'Call to Action',
+      icon: BulbOutlineIcon,
     }),
   ],
 })

@@ -1,6 +1,8 @@
 import {defineField, defineType} from 'sanity'
 
 import {LinkIcon} from '@sanity/icons'
+import LinkInput from '../../components/link/LinkInput'
+import LinkTypeInput from '../../components/link/LinkTypeInput'
 
 /**
  * Link schema object. This link object lets the user first select the type of link and then
@@ -13,18 +15,24 @@ export const link = defineType({
   title: 'Link',
   type: 'object',
   icon: LinkIcon,
+  components: {
+    input: LinkInput,
+  },
   fields: [
     defineField({
       name: 'linkType',
       title: 'Link Type',
       type: 'string',
-      initialValue: 'url',
+      description: 'Select the type of link you want to create',
       options: {
         list: [
           {title: 'URL', value: 'href'},
-          {title: 'Page', value: 'page'},
+          {title: 'Internal Page', value: 'page'},
         ],
         layout: 'radio',
+      },
+      components: {
+        input: LinkTypeInput,
       },
     }),
     defineField({
@@ -34,7 +42,9 @@ export const link = defineType({
       hidden: ({parent}) => parent?.linkType !== 'href',
       validation: (Rule) =>
         // Custom validation to ensure URL is provided if the link type is 'href'
-        Rule.custom((value, context: any) => {
+        Rule.uri({
+          scheme: ['http', 'https', 'mailto', 'tel'],
+        }).custom((value, context: any) => {
           if (context.parent?.linkType === 'href' && !value) {
             return 'URL is required when Link Type is URL'
           }
@@ -51,7 +61,7 @@ export const link = defineType({
         // Custom validation to ensure page reference is provided if the link type is 'page'
         Rule.custom((value, context: any) => {
           if (context.parent?.linkType === 'page' && !value) {
-            return 'Page reference is required when Link Type is Page'
+            return 'Internal Page reference is required when Link Type is Internal Page'
           }
           return true
         }),
