@@ -37,10 +37,10 @@ const homeLocation = {
 
 // resolveHref() is a convenience function that resolves the URL
 // path for different document types and used in the presentation tool.
-function resolveHref(documentType?: string, slug?: string): string | undefined {
+function resolveHref(documentType?: string, slug?: string, language?: string): string | undefined {
   switch (documentType) {
     case 'page':
-      return slug ? `/${slug}` : undefined
+      return slug ? `/${language}/${slug}` : undefined
     default:
       console.warn('Invalid document type:', documentType)
       return undefined
@@ -68,6 +68,10 @@ export default defineConfig({
         // The Main Document Resolver API provides a method of resolving a main document from a given route or route pattern. https://www.sanity.io/docs/presentation-resolver-api#57720a5678d9
         mainDocuments: defineDocuments([
           {
+            route: '/:language',
+            filter: `_type == "page" && slug.current == '/'`,
+          },
+          {
             route: '/:language/:slug',
             filter: `_type == "page" && slug.current == $slug || _id == $slug`,
           },
@@ -83,12 +87,13 @@ export default defineConfig({
             select: {
               name: 'name',
               slug: 'slug.current',
+              language: 'language',
             },
             resolve: (doc) => ({
               locations: [
                 {
                   title: doc?.name || 'Untitled',
-                  href: resolveHref('page', doc?.slug)!,
+                  href: resolveHref('page', doc?.slug, doc?.language)!,
                 },
               ],
             }),
