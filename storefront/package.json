@@ -16,7 +16,6 @@
     "@sanity/uuid": "^3.0.2",
     "@tailwindcss/postcss": "^4.1.8",
     "@tailwindcss/typography": "^0.5.16",
-    "@vercel/speed-insights": "^1.1.0",
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
