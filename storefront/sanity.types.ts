@@ -642,19 +642,10 @@ export type GetPageQueryResult = {
   } | null>;
 } | null;
 // Variable: sitemapData
-// Query: *[_type == "translation.metadata" && "page" in schemaTypes] {    _id,    "translations": translations[]{      "_key": _key,      "page": value->{        _id,        _type,        "slug": slug.current,        language,        _updatedAt      }    }[defined(page.slug)]  }[count(translations) > 0]
+// Query: *[_type == "page" && defined(slug.current) && slug.current != "/"]{    "slug": slug.current,    language  }
 export type SitemapDataResult = Array<{
-  _id: string;
-  translations: Array<{
-    _key: string;
-    page: {
-      _id: string;
-      _type: "page";
-      slug: string;
-      language: Language | null;
-      _updatedAt: string;
-    } | null;
-  }> | null;
+  slug: string;
+  language: Language | null;
 }>;
 // Variable: pagesSlugs
 // Query: *[_type == "page" && defined(slug.current)]  {"slug": slug.current}
@@ -674,8 +665,7 @@ declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
-    "\n  *[_type == \"translation.metadata\" && \"page\" in schemaTypes] {\n    _id,\n    \"translations\": translations[]{\n      \"_key\": _key,\n      \"page\": value->{\n        _id,\n        _type,\n        \"slug\": slug.current,\n        language,\n        _updatedAt\n      }\n    }[defined(page.slug)]\n  }[count(translations) > 0]\n": SitemapDataResult;
+    "\n  *[_type == \"page\" && defined(slug.current) && slug.current != \"/\"]{\n    \"slug\": slug.current,\n    language\n  }\n": SitemapDataResult | PagesSlugsForStaticGenerationResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
-    "\n  *[_type == \"page\" && defined(slug.current) && slug.current != \"/\"]{\n    \"slug\": slug.current,\n    language\n  }\n": PagesSlugsForStaticGenerationResult;
   }
 }

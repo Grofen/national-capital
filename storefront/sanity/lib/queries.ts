@@ -54,19 +54,10 @@ export const getPageQuery = defineQuery(`
 
 // Updated query to work with document-internationalization
 export const sitemapData = defineQuery(`
-  *[_type == "translation.metadata" && "page" in schemaTypes] {
-    _id,
-    "translations": translations[]{
-      "_key": _key,
-      "page": value->{
-        _id,
-        _type,
-        "slug": slug.current,
-        language,
-        _updatedAt
-      }
-    }[defined(page.slug)]
-  }[count(translations) > 0]
+  *[_type == "page" && defined(slug.current) && slug.current != "/"]{
+    "slug": slug.current,
+    language
+  }
 `);
 
 export const pagesSlugs = defineQuery(`

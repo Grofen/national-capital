@@ -9,53 +9,45 @@ import { sitemapData } from "@/sanity/lib/queries";
  */
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // const sitemap: MetadataRoute.Sitemap = [];
-  // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  const sitemap: MetadataRoute.Sitemap = [];
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
-  // // Fetch all translation metadata documents
-  // const allTranslationMetadata = await sanityFetch({
-  //   query: sitemapData,
-  // });
+  // Add homepage for each locale
+  for (const locale of routing.locales) {
+    sitemap.push({
+      url: `${baseUrl}/${locale}`,
+      lastModified: new Date(),
+      priority: 1,
+      changeFrequency: "monthly",
+    });
+  }
 
-  // // Add homepage for each locale
-  // for (const locale of routing.locales) {
-  //   sitemap.push({
-  //     url: `${baseUrl}/${locale}`,
-  //     lastModified: new Date(),
-  //     priority: 1,
-  //     changeFrequency: "monthly",
-  //   });
-  // }
+  // Fetch all pages from Sanity
+  try {
+    const pagesData = await sanityFetch({
+      query: sitemapData,
+    });
 
-  // // Process translation metadata and create sitemap entries
-  // if (allTranslationMetadata?.data && allTranslationMetadata.data.length > 0) {
-  //   for (const translationMetadata of allTranslationMetadata.data) {
-  //     if (
-  //       translationMetadata.translations &&
-  //       translationMetadata.translations.length > 0
-  //     ) {
-  //       for (const translation of translationMetadata.translations) {
-  //         if (
-  //           translation?.page &&
-  //           translation.page.slug &&
-  //           translation.page.language
-  //         ) {
-  //           const priority = 0.8;
-  //           const changeFrequency = "monthly";
-  //           const url = `${baseUrl}/${translation.page.language}/${translation.page.slug}`;
-  //           sitemap.push({
-  //             lastModified: translation.page._updatedAt || new Date(),
-  //             priority,
-  //             changeFrequency,
-  //             url,
-  //           });
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
+    // Process pages and create sitemap entries
+    if (pagesData?.data && pagesData.data.length > 0) {
+      for (const page of pagesData.data) {
+        if (page?.slug && page.language) {
+          const priority = 0.8;
+          const changeFrequency = "monthly";
+          const url = `${baseUrl}/${page.language}/${page.slug}`;
+          sitemap.push({
+            lastModified: new Date(),
+            priority,
+            changeFrequency,
+            url,
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching sitemap data from Sanity:", error);
+    // Continue with homepage if Sanity fetch fails
+  }
 
-  // return sitemap;
-
-  return [];
+  return sitemap;
 }
