@@ -41,12 +41,21 @@ export const getPageQuery = defineQuery(`
   }
 `);
 
+// Updated query to work with document-internationalization
 export const sitemapData = defineQuery(`
-  *[_type == "page" && defined(slug.current) && language == $language] | order(_type asc) {
-    "slug": slug.current,
-    _type,
-    _updatedAt,
-  }
+  *[_type == "translation.metadata" && "page" in schemaTypes] {
+    _id,
+    "translations": translations[]{
+      "_key": _key,
+      "page": value->{
+        _id,
+        _type,
+        "slug": slug.current,
+        language,
+        _updatedAt
+      }
+    }[defined(page.slug)]
+  }[count(translations) > 0]
 `);
 
 export const pagesSlugs = defineQuery(`
@@ -54,8 +63,14 @@ export const pagesSlugs = defineQuery(`
   {"slug": slug.current}
 `);
 
-// Queries for static generation (without language filter)
+// Updated query for static generation to work with translation metadata
 export const pagesSlugsForStaticGeneration = defineQuery(`
-  *[_type == "page" && defined(slug.current)]
-  {"slug": slug.current}
+  *[_type == "translation.metadata" && "page" in schemaTypes] {
+    "translations": translations[]{
+      "page": value->{
+        "slug": slug.current,
+        language
+      }
+    }[defined(page.slug)]
+  }[count(translations) > 0].translations[].page
 `);

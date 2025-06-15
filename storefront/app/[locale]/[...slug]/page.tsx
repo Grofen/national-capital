@@ -25,7 +25,15 @@ export async function generateStaticParams() {
     perspective: "published",
     stega: false,
   });
-  return data;
+
+  return (
+    data
+      ?.filter((page) => page && page.slug && page.language)
+      .map((page) => ({
+        locale: page!.language!,
+        slug: page!.slug.split("/").filter(Boolean), // Convert slug to array format expected by [...slug]
+      })) || []
+  );
 }
 
 /**

@@ -3,30 +3,13 @@ import Head from "next/head";
 
 import PageBuilderPage from "@/app/components/PageBuilder";
 import { sanityFetch } from "@/sanity/lib/live";
-import {
-  getPageQuery,
-  pagesSlugsForStaticGeneration,
-} from "@/sanity/lib/queries";
+import { getPageQuery } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
 import { notFound } from "next/navigation";
 
 type Props = {
-  params: Promise<{ locale: string; slug: string[] }>;
+  params: Promise<{ locale: string }>;
 };
-
-/**
- * Generate the static params for the page.
- * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-static-params
- */
-export async function generateStaticParams() {
-  const { data } = await sanityFetch({
-    query: pagesSlugsForStaticGeneration,
-    // Use the published perspective in generateStaticParams
-    perspective: "published",
-    stega: false,
-  });
-  return data;
-}
 
 /**
  * Generate metadata for the page.
