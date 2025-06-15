@@ -55,6 +55,11 @@ export default defineConfig({
   projectId,
   dataset,
 
+  // Media library configuration
+  mediaLibrary: {
+    enabled: true,
+  },
+
   plugins: [
     // Presentation tool configuration for Visual Editing
     presentationTool({
@@ -120,6 +125,18 @@ export default defineConfig({
   // Schema configuration, imported from ./src/schemaTypes/index.ts
   schema: {
     types: schemaTypes,
+  },
+
+  // Form configuration
+  form: {
+    // Disable the default for image assets
+    image: {
+      assetSources: (sources) => sources.filter((source) => source.name !== 'sanity-default'),
+    },
+    // Disable the default for file assets
+    file: {
+      assetSources: (sources) => sources.filter((source) => source.name !== 'sanity-default'),
+    },
   },
 
   // Add initial value templates and filter out default page template
