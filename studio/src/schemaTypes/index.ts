@@ -2,6 +2,7 @@ import {blockContent} from './objects/blockContent'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {languageField} from './objects/languageField'
+import {languageSlug} from './objects/languageSlug'
 import {link} from './objects/link'
 import {page} from './documents/page'
 import {settings} from './singletons/settings'
@@ -20,5 +21,6 @@ export const schemaTypes = [
   callToAction,
   infoSection,
   languageField,
+  languageSlug,
   link,
 ]

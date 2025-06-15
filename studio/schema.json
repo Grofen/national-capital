@@ -1309,7 +1309,7 @@
         },
         "optional": true
       },
-      "name": {
+      "title": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
@@ -1319,24 +1319,32 @@
       "slug": {
         "type": "objectAttribute",
         "value": {
-          "type": "inline",
-          "name": "slug"
+          "type": "object",
+          "attributes": {
+            "current": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": false
+            },
+            "source": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string"
+              },
+              "optional": true
+            },
+            "_type": {
+              "type": "objectAttribute",
+              "value": {
+                "type": "string",
+                "value": "languageSlug"
+              }
+            }
+          }
         },
         "optional": false
-      },
-      "heading": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": false
-      },
-      "subheading": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
       },
       "pageBuilder": {
         "type": "objectAttribute",
@@ -1380,6 +1388,14 @@
         },
         "optional": true
       }
+    }
+  },
+  {
+    "name": "languageSlug",
+    "type": "type",
+    "value": {
+      "type": "inline",
+      "name": "slug"
     }
   },
   {

@@ -19,32 +19,20 @@ export const page = defineType({
     }),
 
     defineField({
-      name: 'name',
-      title: 'Name',
+      name: 'title',
+      title: 'Title',
       type: 'string',
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().error(
+          'Title is required, it will be used to identify the page in the studio and used as a fallback for the SEO title',
+        ),
     }),
 
     defineField({
       name: 'slug',
       title: 'Slug',
-      type: 'slug',
+      type: 'languageSlug',
       validation: (Rule) => Rule.required(),
-      options: {
-        source: 'name',
-        maxLength: 96,
-      },
-    }),
-    defineField({
-      name: 'heading',
-      title: 'Heading',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'subheading',
-      title: 'Subheading',
-      type: 'string',
     }),
     defineField({
       name: 'pageBuilder',
