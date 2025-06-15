@@ -52,5 +52,11 @@ export const page = defineType({
         },
       },
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'SEO settings for the page, if not set, the global settings will be used',
+    }),
   ],
 })
