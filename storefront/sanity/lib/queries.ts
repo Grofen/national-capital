@@ -19,10 +19,8 @@ const pageFields = /* groq */ `
   _id,
   _type,
   language,
-  name,
+  title,
   slug,
-  heading,
-  subheading,
   "pageBuilder": pageBuilder[]{
     ...,
     _type == "callToAction" => {

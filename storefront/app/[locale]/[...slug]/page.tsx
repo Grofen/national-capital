@@ -50,8 +50,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   });
 
   return {
-    title: page?.name,
-    description: page?.heading,
+    title: page?.title,
+    // description: page?.description,
   } satisfies Metadata;
 }
 
