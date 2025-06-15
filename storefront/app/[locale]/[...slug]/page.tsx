@@ -9,6 +9,7 @@ import {
 import { GetPageQueryResult } from "@/sanity.types";
 import { notFound } from "next/navigation";
 import { Container } from "@/app/components/Container";
+import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 type Props = {
   params: Promise<{ locale: string; slug: string[] }>;
@@ -49,9 +50,14 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     stega: false,
   });
 
+  const ogImage = resolveOpenGraphImage(page?.seo?.ogImage);
+
   return {
-    title: page?.title,
-    // description: page?.description,
+    title: page?.seo?.metaTitle || page?.title,
+    description: page?.seo?.metaDescription,
+    openGraph: {
+      images: ogImage ? [ogImage] : [],
+    },
   } satisfies Metadata;
 }
 

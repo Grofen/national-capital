@@ -15,6 +15,10 @@ const linkFields = /* groq */ `
   }
 `;
 
+const imageFields = /* groq */ `
+  "url": asset->url,
+`;
+
 const pageFields = /* groq */ `
   _id,
   _type,
@@ -35,7 +39,8 @@ const pageFields = /* groq */ `
         }
       }
     },
-  }
+  },
+  seo
 `;
 
 export const getPageQuery = defineQuery(`
