@@ -19,6 +19,32 @@ const imageFields = /* groq */ `
   "url": asset->url,
 `;
 
+const blockContentFields = /* groq */ `
+  ...,
+  _type == "cta" => {
+    ...,
+    link {
+      ...,
+      "page": page->slug.current,
+    }
+  },
+  markDefs[]{
+    ...,
+    ${linkReference}
+  }
+`;
+
+const contactSectionFields = /* groq */ `
+  _type == "contactSection" => {
+    heading[]{
+      ${blockContentFields}
+    },
+    address[]{
+      ${blockContentFields}
+    }
+  }
+`;
+
 const pageFields = /* groq */ `
   _id,
   _type,
@@ -27,6 +53,7 @@ const pageFields = /* groq */ `
   slug,
   "pageBuilder": pageBuilder[]{
     ...,
+    ${contactSectionFields},
     _type == "callToAction" => {
       ${linkFields},
     },

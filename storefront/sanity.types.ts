@@ -44,13 +44,73 @@ export type InfoSection = {
     level?: number;
     _type: "block";
     _key: string;
-  }>;
+  } | {
+    _key: string;
+  } & CallToAction>;
+};
+
+export type ContactSection = {
+  _type: "contactSection";
+  heading: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      linkType?: "href" | "page";
+      href?: string;
+      page?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "page";
+      };
+      openInNewTab?: boolean;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    _key: string;
+  } & CallToAction>;
+  address?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      linkType?: "href" | "page";
+      href?: string;
+      page?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "page";
+      };
+      openInNewTab?: boolean;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    _key: string;
+  } & CallToAction>;
 };
 
 export type CallToAction = {
   _type: "callToAction";
-  heading: string;
-  text?: string;
   buttonText?: string;
   link?: Link;
 };
@@ -93,7 +153,9 @@ export type BlockContent = Array<{
   level?: number;
   _type: "block";
   _key: string;
-}>;
+} | {
+  _key: string;
+} & CallToAction>;
 
 export type Settings = {
   _id: string;
@@ -195,9 +257,9 @@ export type Page = {
   };
   pageBuilder?: Array<{
     _key: string;
-  } & CallToAction | {
+  } & InfoSection | {
     _key: string;
-  } & InfoSection>;
+  } & ContactSection>;
   seo?: Seo;
 };
 
@@ -468,7 +530,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Language | InfoSection | CallToAction | Link | BlockContent | Settings | TranslationMetadata | InternationalizedArrayReferenceValue | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Language | InfoSection | ContactSection | CallToAction | Link | BlockContent | Settings | TranslationMetadata | InternationalizedArrayReferenceValue | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -536,7 +598,7 @@ export type SettingsQueryResult = {
   }>;
 } | null;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo,    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo    }  }
+// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo,    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo    }  }
 export type GetPageQueryResult = {
   _id: string;
   _type: "page";
@@ -549,17 +611,61 @@ export type GetPageQueryResult = {
   };
   pageBuilder: Array<{
     _key: string;
-    _type: "callToAction";
-    heading: string;
-    text?: string;
-    buttonText?: string;
-    link: {
-      _type: "link";
-      linkType?: "href" | "page";
-      href?: string;
-      page: string | null;
-      openInNewTab?: boolean;
-    } | null;
+    _type: "contactSection";
+    heading: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        linkType?: "href" | "page";
+        href?: string;
+        page: string | null;
+        openInNewTab?: boolean;
+        _type: "link";
+        _key: string;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "callToAction";
+      buttonText?: string;
+      link?: Link;
+      markDefs: null;
+    }>;
+    address: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs: Array<{
+        linkType?: "href" | "page";
+        href?: string;
+        page: string | null;
+        openInNewTab?: boolean;
+        _type: "link";
+        _key: string;
+      }> | null;
+      level?: number;
+      _type: "block";
+      _key: string;
+    } | {
+      _key: string;
+      _type: "callToAction";
+      buttonText?: string;
+      link?: Link;
+      markDefs: null;
+    }> | null;
   } | {
     _key: string;
     _type: "infoSection";
@@ -585,6 +691,12 @@ export type GetPageQueryResult = {
       level?: number;
       _type: "block";
       _key: string;
+    } | {
+      _key: string;
+      _type: "callToAction";
+      buttonText?: string;
+      link?: Link;
+      markDefs: null;
     }> | null;
   }> | null;
   seo: Seo | null;
@@ -600,17 +712,61 @@ export type GetPageQueryResult = {
     };
     pageBuilder: Array<{
       _key: string;
-      _type: "callToAction";
-      heading: string;
-      text?: string;
-      buttonText?: string;
-      link: {
-        _type: "link";
-        linkType?: "href" | "page";
-        href?: string;
-        page: string | null;
-        openInNewTab?: boolean;
-      } | null;
+      _type: "contactSection";
+      heading: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          linkType?: "href" | "page";
+          href?: string;
+          page: string | null;
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        _key: string;
+        _type: "callToAction";
+        buttonText?: string;
+        link?: Link;
+        markDefs: null;
+      }>;
+      address: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          linkType?: "href" | "page";
+          href?: string;
+          page: string | null;
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      } | {
+        _key: string;
+        _type: "callToAction";
+        buttonText?: string;
+        link?: Link;
+        markDefs: null;
+      }> | null;
     } | {
       _key: string;
       _type: "infoSection";
@@ -636,6 +792,12 @@ export type GetPageQueryResult = {
         level?: number;
         _type: "block";
         _key: string;
+      } | {
+        _key: string;
+        _type: "callToAction";
+        buttonText?: string;
+        link?: Link;
+        markDefs: null;
       }> | null;
     }> | null;
     seo: Seo | null;
@@ -664,7 +826,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
+    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"page\" && defined(slug.current) && slug.current != \"/\"]{\n    \"slug\": slug.current,\n    language\n  }\n": SitemapDataResult | PagesSlugsForStaticGenerationResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
   }
