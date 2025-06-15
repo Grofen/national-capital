@@ -509,10 +509,11 @@ export type SettingsQueryResult = {
   }>;
 } | null;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {          link {      ...,        _type == "link" => {    "page": page->slug.current,  }      },      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,  }          }        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  name,  slug,  heading,  subheading,  "pageBuilder": pageBuilder[]{    ...,    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  name,  slug,  heading,  subheading,  "pageBuilder": pageBuilder[]{    ...,    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  }    }  }
 export type GetPageQueryResult = {
   _id: string;
   _type: "page";
+  language: Language | null;
   name: string;
   slug: Slug;
   heading: string;
@@ -557,6 +558,55 @@ export type GetPageQueryResult = {
       _key: string;
     }> | null;
   }> | null;
+  translations: Array<{
+    _id: string;
+    _type: "page";
+    language: Language | null;
+    name: string;
+    slug: Slug;
+    heading: string;
+    subheading: string | null;
+    pageBuilder: Array<{
+      _key: string;
+      _type: "callToAction";
+      heading: string;
+      text?: string;
+      buttonText?: string;
+      link: {
+        _type: "link";
+        linkType?: "href" | "page";
+        href?: string;
+        page: string | null;
+        openInNewTab?: boolean;
+      } | null;
+    } | {
+      _key: string;
+      _type: "infoSection";
+      heading?: string;
+      subheading?: string;
+      content: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs: Array<{
+          linkType?: "href" | "page";
+          href?: string;
+          page: string | null;
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }> | null;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }> | null;
+    }> | null;
+  } | null>;
 } | null;
 // Variable: sitemapData
 // Query: *[_type == "translation.metadata" && "page" in schemaTypes] {    _id,    "translations": translations[]{      "_key": _key,      "page": value->{        _id,        _type,        "slug": slug.current,        language,        _updatedAt      }    }[defined(page.slug)]  }[count(translations) > 0]
@@ -579,20 +629,20 @@ export type PagesSlugsResult = Array<{
   slug: string;
 }>;
 // Variable: pagesSlugsForStaticGeneration
-// Query: *[_type == "translation.metadata" && "page" in schemaTypes] {    "translations": translations[]{      "page": value->{        "slug": slug.current,        language      }    }[defined(page.slug)]  }[count(translations) > 0].translations[].page
+// Query: *[_type == "page"]{    "slug": slug.current,    language  }
 export type PagesSlugsForStaticGenerationResult = Array<{
   slug: string;
   language: Language | null;
-} | null>;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      }\n,\n      },\n      _type == \"infoSection\" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n          }\n        }\n      },\n    },\n  }\n": GetPageQueryResult;
+    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  name,\n  slug,\n  heading,\n  subheading,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  }\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  name,\n  slug,\n  heading,\n  subheading,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  }\n\n    }\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"translation.metadata\" && \"page\" in schemaTypes] {\n    _id,\n    \"translations\": translations[]{\n      \"_key\": _key,\n      \"page\": value->{\n        _id,\n        _type,\n        \"slug\": slug.current,\n        language,\n        _updatedAt\n      }\n    }[defined(page.slug)]\n  }[count(translations) > 0]\n": SitemapDataResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
-    "\n  *[_type == \"translation.metadata\" && \"page\" in schemaTypes] {\n    \"translations\": translations[]{\n      \"page\": value->{\n        \"slug\": slug.current,\n        language\n      }\n    }[defined(page.slug)]\n  }[count(translations) > 0].translations[].page\n": PagesSlugsForStaticGenerationResult;
+    "\n  *[_type == \"page\"]{\n    \"slug\": slug.current,\n    language\n  }\n": PagesSlugsForStaticGenerationResult;
   }
 }

@@ -10,34 +10,42 @@ const linkReference = /* groq */ `
 
 const linkFields = /* groq */ `
   link {
-      ...,
-      ${linkReference}
+    ...,
+    ${linkReference}
+  }
+`;
+
+const pageFields = /* groq */ `
+  _id,
+  _type,
+  language,
+  name,
+  slug,
+  heading,
+  subheading,
+  "pageBuilder": pageBuilder[]{
+    ...,
+    _type == "callToAction" => {
+      ${linkFields},
+    },
+    _type == "infoSection" => {
+      content[]{
+        ...,
+        markDefs[]{
+          ...,
+          ${linkReference}
+        }
       }
+    },
+  }
 `;
 
 export const getPageQuery = defineQuery(`
   *[_type == 'page' && slug.current == $slug && language == $language][0]{
-    _id,
-    _type,
-    name,
-    slug,
-    heading,
-    subheading,
-    "pageBuilder": pageBuilder[]{
-      ...,
-      _type == "callToAction" => {
-        ${linkFields},
-      },
-      _type == "infoSection" => {
-        content[]{
-          ...,
-          markDefs[]{
-            ...,
-            ${linkReference}
-          }
-        }
-      },
-    },
+    ${pageFields},
+    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{
+      ${pageFields}
+    }
   }
 `);
 
@@ -65,12 +73,8 @@ export const pagesSlugs = defineQuery(`
 
 // Updated query for static generation to work with translation metadata
 export const pagesSlugsForStaticGeneration = defineQuery(`
-  *[_type == "translation.metadata" && "page" in schemaTypes] {
-    "translations": translations[]{
-      "page": value->{
-        "slug": slug.current,
-        language
-      }
-    }[defined(page.slug)]
-  }[count(translations) > 0].translations[].page
+  *[_type == "page"]{
+    "slug": slug.current,
+    language
+  }
 `);

@@ -9,6 +9,7 @@ import {
 } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
 import { notFound } from "next/navigation";
+import { Container } from "@/app/components/Container";
 
 type Props = {
   params: Promise<{ locale: string; slug: string[] }>;
@@ -28,7 +29,9 @@ export async function generateStaticParams() {
 
   return (
     data
-      ?.filter((page) => page && page.slug && page.language)
+      ?.filter(
+        (page) => page && page.slug && page.language && page.slug !== "/"
+      ) // Filter out home page
       .map((page) => ({
         locale: page!.language!,
         slug: page!.slug.split("/").filter(Boolean), // Convert slug to array format expected by [...slug]
@@ -69,25 +72,8 @@ export default async function Page(props: Props) {
   }
 
   return (
-    <div className="my-12 lg:my-24">
-      <Head>
-        <title>{page.heading}</title>
-      </Head>
-      <div className="">
-        <div className="container">
-          <div className="pb-6 border-b border-gray-100">
-            <div className="max-w-3xl">
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl">
-                {page.heading}
-              </h2>
-              <p className="mt-4 text-base lg:text-lg leading-relaxed text-gray-600 uppercase font-light">
-                {page.subheading}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <Container>
       <PageBuilderPage page={page as GetPageQueryResult} />
-    </div>
+    </Container>
   );
 }

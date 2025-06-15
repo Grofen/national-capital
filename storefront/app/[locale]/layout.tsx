@@ -9,7 +9,6 @@ import { RootLayout as AppRootLayout } from "@/app/components/RootLayout";
 import DraftModeToast from "@/app/components/DraftModeToast";
 import type { Metadata } from "next";
 import { SanityLive } from "@/sanity/lib/live";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Toaster } from "sonner";
 import { cn } from "@/app/utils/cn";
 import { draftMode } from "next/headers";
@@ -140,7 +139,6 @@ export default async function LocaleLayout({
           <SanityLive onError={handleError} />
           <AppRootLayout>{children}</AppRootLayout>
         </NextIntlClientProvider>
-        <SpeedInsights />
       </body>
     </html>
   );
