@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Head from "next/head";
 
 import PageBuilderPage from "@/app/components/PageBuilder";
 import { sanityFetch } from "@/sanity/lib/live";
@@ -29,9 +28,7 @@ export async function generateStaticParams() {
 
   return (
     data
-      ?.filter(
-        (page) => page && page.slug && page.language && page.slug !== "/"
-      ) // Filter out home page
+      ?.filter((page) => page && page.slug && page.language) // Filter out home page
       .map((page) => ({
         locale: page!.language!,
         slug: page!.slug.split("/").filter(Boolean), // Convert slug to array format expected by [...slug]

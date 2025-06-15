@@ -73,7 +73,7 @@ export const pagesSlugs = defineQuery(`
 
 // Updated query for static generation to work with translation metadata
 export const pagesSlugsForStaticGeneration = defineQuery(`
-  *[_type == "page"]{
+  *[_type == "page" && defined(slug.current) && slug.current != "/"]{
     "slug": slug.current,
     language
   }

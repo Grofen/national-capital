@@ -629,7 +629,7 @@ export type PagesSlugsResult = Array<{
   slug: string;
 }>;
 // Variable: pagesSlugsForStaticGeneration
-// Query: *[_type == "page"]{    "slug": slug.current,    language  }
+// Query: *[_type == "page" && defined(slug.current) && slug.current != "/"]{    "slug": slug.current,    language  }
 export type PagesSlugsForStaticGenerationResult = Array<{
   slug: string;
   language: Language | null;
@@ -643,6 +643,6 @@ declare module "@sanity/client" {
     "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  name,\n  slug,\n  heading,\n  subheading,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  }\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  name,\n  slug,\n  heading,\n  subheading,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  }\n\n    }\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"translation.metadata\" && \"page\" in schemaTypes] {\n    _id,\n    \"translations\": translations[]{\n      \"_key\": _key,\n      \"page\": value->{\n        _id,\n        _type,\n        \"slug\": slug.current,\n        language,\n        _updatedAt\n      }\n    }[defined(page.slug)]\n  }[count(translations) > 0]\n": SitemapDataResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
-    "\n  *[_type == \"page\"]{\n    \"slug\": slug.current,\n    language\n  }\n": PagesSlugsForStaticGenerationResult;
+    "\n  *[_type == \"page\" && defined(slug.current) && slug.current != \"/\"]{\n    \"slug\": slug.current,\n    language\n  }\n": PagesSlugsForStaticGenerationResult;
   }
 }
