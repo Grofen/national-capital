@@ -1,26 +1,48 @@
 import { FadeIn, FadeInStagger } from "@/app/components/FadeIn";
 
+import { ClientsSection as ClientsSectionType } from "@/sanity.types";
 import { Container } from "@/app/components/Container";
-import { Logo } from "@/app/components/Logo";
+import Image from "next/image";
+import { cn } from "@/app/utils/cn";
+import { urlForImage } from "@/sanity/lib/utils";
 
-const clients = [
-  ["Phobia"],
-  ["Family Fund"],
-  ["Unseal"],
-  ["Mail Smirk"],
-  ["Home Work"],
-  ["Green Life"],
-  ["Bright Path"],
-  ["North Adventures"],
-];
+interface Props {
+  block: ClientsSectionType;
+  className?: string;
+}
 
-const Clients = () => {
+const ClientLogo = ({
+  client,
+}: {
+  client: ClientsSectionType["clients"][number];
+}) => {
+  const image = urlForImage(client.logo)?.width(100).height(100).url();
+
+  if (!image) return null;
+
   return (
-    <div className="mt-24 rounded-4xl bg-neutral-950 py-20 sm:mt-32 sm:py-32 lg:mt-56">
+    <Image
+      alt={client.name}
+      src={image}
+      width={100}
+      height={100}
+      className="h-10 w-auto"
+    />
+  );
+};
+
+const Clients = ({ block, className }: Props) => {
+  return (
+    <div
+      className={cn(
+        "mt-24 rounded-4xl bg-neutral-950 py-20 sm:mt-32 sm:py-32 lg:mt-56",
+        className
+      )}
+    >
       <Container>
         <FadeIn className="flex items-center gap-x-8">
           <h2 className="text-center font-display text-sm font-semibold tracking-wider text-white sm:text-left">
-            We’ve worked with hundreds of amazing people
+            {block.heading}
           </h2>
           <div className="h-px flex-auto bg-neutral-800" />
         </FadeIn>
@@ -29,10 +51,10 @@ const Clients = () => {
             role="list"
             className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4"
           >
-            {clients.map(([client]) => (
-              <li key={client}>
+            {block.clients.map((client) => (
+              <li key={client._key}>
                 <FadeIn>
-                  <Logo />
+                  <ClientLogo client={client} />
                 </FadeIn>
               </li>
             ))}

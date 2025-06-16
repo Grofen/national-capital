@@ -1,3 +1,4 @@
+import ClientsSection from "@/app/components/sections/ClientsSection";
 import ContactSection from "@/app/components/sections/ContactSection";
 import Cta from "@/app/components/Cta";
 import Info from "@/app/components/InfoSection";
@@ -26,6 +27,7 @@ const Blocks: BlocksType = {
   infoSection: Info,
   contactSection: ContactSection,
   servicesSection: ServicesSection,
+  clientsSection: ClientsSection,
 };
 
 /**

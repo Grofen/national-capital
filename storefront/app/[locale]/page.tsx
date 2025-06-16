@@ -132,7 +132,7 @@ export default async function Page(props: Props) {
         </FadeIn>
       </Container>
 
-      <Clients />
+      {/* <Clients /> */}
 
       <CaseStudies caseStudies={[]} />
 

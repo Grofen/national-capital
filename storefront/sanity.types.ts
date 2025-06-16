@@ -109,6 +109,28 @@ export type ContactSection = {
   } & CallToAction>;
 };
 
+export type ClientsSection = {
+  _type: "clientsSection";
+  heading: string;
+  clients: Array<{
+    name: string;
+    logo: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _type: "client";
+    _key: string;
+  }>;
+};
+
 export type CallToAction = {
   _type: "callToAction";
   buttonText?: string;
@@ -259,7 +281,9 @@ export type Page = {
     _key: string;
   } & InfoSection | {
     _key: string;
-  } & ContactSection>;
+  } & ContactSection | {
+    _key: string;
+  } & ClientsSection>;
   seo?: Seo;
 };
 
@@ -530,7 +554,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = Language | InfoSection | ContactSection | CallToAction | Link | BlockContent | Settings | TranslationMetadata | InternationalizedArrayReferenceValue | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = Language | InfoSection | ContactSection | ClientsSection | CallToAction | Link | BlockContent | Settings | TranslationMetadata | InternationalizedArrayReferenceValue | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -610,6 +634,27 @@ export type GetPageQueryResult = {
     _type: "languageSlug";
   };
   pageBuilder: Array<{
+    _key: string;
+    _type: "clientsSection";
+    heading: string;
+    clients: Array<{
+      name: string;
+      logo: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      };
+      _type: "client";
+      _key: string;
+    }>;
+  } | {
     _key: string;
     _type: "contactSection";
     heading: Array<{
@@ -711,6 +756,27 @@ export type GetPageQueryResult = {
       _type: "languageSlug";
     };
     pageBuilder: Array<{
+      _key: string;
+      _type: "clientsSection";
+      heading: string;
+      clients: Array<{
+        name: string;
+        logo: {
+          asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          };
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        _type: "client";
+        _key: string;
+      }>;
+    } | {
       _key: string;
       _type: "contactSection";
       heading: Array<{
