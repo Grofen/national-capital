@@ -45,6 +45,26 @@ const contactSectionFields = /* groq */ `
   }
 `;
 
+const servicesSectionFields = /* groq */ `
+  _type == "servicesSection" => {
+    eyebrow,
+    heading[]{
+      ${blockContentFields}
+    },
+    "image": {
+      ...,
+      "url": asset->url,
+      "metadata": asset->metadata,
+      "dimensions": asset->metadata.dimensions
+    },
+    services[] {
+      description[]{
+        ${blockContentFields}
+      }
+    }
+  }
+`;
+
 const pageFields = /* groq */ `
   _id,
   _type,

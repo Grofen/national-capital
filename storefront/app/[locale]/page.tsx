@@ -145,8 +145,6 @@ export default async function Page(props: Props) {
         those annoying permission dialogs.
       </Testimonial>
 
-      <ServicesSection />
-
       <PageBuilderPage page={page as GetPageQueryResult} />
     </>
   );

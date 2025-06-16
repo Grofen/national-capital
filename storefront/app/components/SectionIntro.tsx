@@ -13,7 +13,7 @@ export function SectionIntro({
   React.ComponentPropsWithoutRef<typeof Container>,
   "title" | "children"
 > & {
-  title: string;
+  title: string | React.ReactNode;
   eyebrow?: string;
   children?: React.ReactNode;
   smaller?: boolean;
@@ -36,17 +36,20 @@ export function SectionIntro({
               <span className="sr-only"> - </span>
             </>
           )}
-          <span
-            className={clsx(
-              "block font-display tracking-tight text-balance",
-              smaller
-                ? "text-2xl font-semibold"
-                : "text-4xl font-medium sm:text-5xl",
-              invert ? "text-white" : "text-neutral-950"
-            )}
-          >
-            {title}
-          </span>
+          {typeof title === "string" && (
+            <span
+              className={clsx(
+                "block font-display tracking-tight text-balance",
+                smaller
+                  ? "text-2xl font-semibold"
+                  : "text-4xl font-medium sm:text-5xl",
+                invert ? "text-white" : "text-neutral-950"
+              )}
+            >
+              {title}
+            </span>
+          )}
+          {typeof title !== "string" && title}
         </h2>
         {children && (
           <div
