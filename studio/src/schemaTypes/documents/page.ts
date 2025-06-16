@@ -51,6 +51,7 @@ export const page = defineType({
         defineArrayMember({type: 'infoSection'}),
         defineArrayMember({type: 'contactSection'}),
         defineArrayMember({type: 'clientsSection'}),
+        defineArrayMember({type: 'servicesSection'}),
       ],
       options: {
         insertMenu: {
