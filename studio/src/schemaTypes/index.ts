@@ -1,5 +1,6 @@
 import {blockContent} from './objects/blockContent'
 import {callToAction} from './objects/callToAction'
+import {clientsSection} from './objects/clientsSection'
 import {contactSection} from './objects/contactSection'
 import {infoSection} from './objects/infoSection'
 import {languageField} from './objects/languageField'
@@ -21,6 +22,7 @@ export const schemaTypes = [
   // Objects
   blockContent,
   callToAction,
+  clientsSection,
   contactSection,
   infoSection,
   languageField,
