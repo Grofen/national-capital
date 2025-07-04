@@ -29,34 +29,9 @@ export const clientsSection = defineType({
       of: [
         defineArrayMember({
           name: 'client',
-          type: 'object',
+          type: 'reference',
           title: 'Client',
-          fields: [
-            defineField({
-              name: 'name',
-              title: 'Client Name',
-              type: 'string',
-              validation: (Rule) => Rule.required(),
-            }),
-            defineField({
-              name: 'logo',
-              title: 'Client Logo',
-              type: 'image',
-              validation: (Rule) => Rule.required().error('Client logo is required'),
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'name',
-              media: 'logo',
-            },
-            prepare({title, media}) {
-              return {
-                title: title || 'Untitled Client',
-                media: media,
-              }
-            },
-          },
+          to: [{type: 'client'}],
         }),
       ],
       validation: (Rule) => Rule.required().min(1).error('At least one client is required'),

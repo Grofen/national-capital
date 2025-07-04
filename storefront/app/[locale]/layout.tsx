@@ -124,7 +124,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={cn("h-full bg-neutral-950 text-base antialiased", direction)}
+      className={cn("h-full bg-primary-900 text-base antialiased", direction)}
       dir={direction}
     >
       <body className="flex min-h-full flex-col">

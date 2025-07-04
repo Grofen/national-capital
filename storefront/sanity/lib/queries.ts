@@ -45,21 +45,39 @@ const contactSectionFields = /* groq */ `
   }
 `;
 
+const clientsSectionFields = /* groq */ `
+  _type == "clientsSection" => {
+    heading,
+    clients[]-> {
+      _id,
+      name,
+      logo {
+        ...,
+        ${imageFields}
+      }
+    }
+  }
+`;
+
 const servicesSectionFields = /* groq */ `
   _type == "servicesSection" => {
     eyebrow,
     heading[]{
       ${blockContentFields}
     },
-    "image": {
-      ...,
-      "url": asset->url,
-      "metadata": asset->metadata,
-      "dimensions": asset->metadata.dimensions
-    },
-    services[] {
-      description[]{
-        ${blockContentFields}
+    services[]-> {
+      _id,
+      title,
+      description,
+      page {
+        ...,
+        ${linkReference}
+      },
+      media {
+        ...,
+        ${imageFields}
+        "metadata": asset->metadata,
+        "dimensions": asset->metadata.dimensions
       }
     }
   }
@@ -74,6 +92,8 @@ const pageFields = /* groq */ `
   "pageBuilder": pageBuilder[]{
     ...,
     ${contactSectionFields},
+    ${clientsSectionFields},
+    ${servicesSectionFields},
     _type == "callToAction" => {
       ${linkFields},
     },

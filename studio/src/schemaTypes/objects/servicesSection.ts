@@ -31,44 +31,52 @@ export const servicesSection = defineType({
       description: 'Main heading for the services section',
     }),
     defineField({
-      name: 'image',
-      title: 'Section Image',
-      type: 'image',
-      description: 'Image displayed alongside the services list',
-      validation: (Rule) => Rule.required().error('Image is required'),
-    }),
-    defineField({
       name: 'services',
       title: 'Services',
       type: 'array',
       of: [
         defineArrayMember({
           name: 'service',
-          type: 'object',
           title: 'Service',
-          fields: [
-            defineField({
-              name: 'description',
-              title: 'Service Description',
-              type: 'blockContent',
-              validation: (Rule) => Rule.required(),
-            }),
-          ],
-          preview: {
-            select: {
-              title: 'description',
-            },
-            prepare({title}) {
-              return {
-                title: title ? toPlainText(title).slice(0, 50) + '...' : 'Untitled Service',
-              }
-            },
-          },
+          type: 'reference',
+          to: [{type: 'service'}],
         }),
       ],
       validation: (Rule) => Rule.required().min(1).error('At least one service is required'),
       description: 'List of services to display',
     }),
+    // defineField({
+    //   name: 'services',
+    //   title: 'Services',
+    //   type: 'array',
+    //   of: [
+    //     defineArrayMember({
+    //       name: 'service',
+    //       type: 'object',
+    //       title: 'Service',
+    //       fields: [
+    //         defineField({
+    //           name: 'description',
+    //           title: 'Service Description',
+    //           type: 'blockContent',
+    //           validation: (Rule) => Rule.required(),
+    //         }),
+    //       ],
+    //       preview: {
+    //         select: {
+    //           title: 'description',
+    //         },
+    //         prepare({title}) {
+    //           return {
+    //             title: title ? toPlainText(title).slice(0, 50) + '...' : 'Untitled Service',
+    //           }
+    //         },
+    //       },
+    //     }),
+    //   ],
+    //   validation: (Rule) => Rule.required().min(1).error('At least one service is required'),
+    //   description: 'List of services to display',
+    // }),
   ],
   preview: {
     select: {

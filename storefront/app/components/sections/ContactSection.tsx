@@ -15,7 +15,7 @@ const ContactSection = ({ block, className }: Props) => {
     <Container className="mt-24 sm:mt-32 lg:mt-40">
       <FadeIn
         className={cn(
-          "-mx-6 rounded-4xl bg-neutral-950 px-6 py-20 sm:mx-0 sm:py-32 md:px-12",
+          "-mx-6 rounded-4xl bg-primary-900 px-6 py-20 sm:mx-0 sm:py-32 md:px-12",
           className
         )}
       >
