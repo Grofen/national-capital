@@ -1,5 +1,26 @@
 import { defineQuery } from "next-sanity";
 
+const linkReference = /* groq */ `
+  _type == "link" => {
+    "page": page->slug.current,
+  }
+`;
+
+const blockContentFields = /* groq */ `
+  ...,
+  _type == "cta" => {
+    ...,
+    link {
+      ...,
+      "page": page->slug.current,
+    }
+  },
+  markDefs[]{
+    ...,
+    ${linkReference}
+  }
+`;
+
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 
 export const headerQuery =
@@ -23,11 +44,25 @@ export const headerQuery =
   }
 }`);
 
-const linkReference = /* groq */ `
-  _type == "link" => {
-    "page": page->slug.current,
+export const footerQuery =
+  defineQuery(`*[_type == "footer" && language == $language][0]{
+  _id,
+  _type,
+  language,
+  navigationSections[] {
+    ...,
+    links[] {
+      ...,
+      link {
+        ...,
+        "page": page->slug.current,
+      }
+    }
+  },
+  contactSection[]{
+    ${blockContentFields}
   }
-`;
+}`);
 
 const linkFields = /* groq */ `
   link {
@@ -38,21 +73,6 @@ const linkFields = /* groq */ `
 
 const imageFields = /* groq */ `
   "url": asset->url,
-`;
-
-const blockContentFields = /* groq */ `
-  ...,
-  _type == "cta" => {
-    ...,
-    link {
-      ...,
-      "page": page->slug.current,
-    }
-  },
-  markDefs[]{
-    ...,
-    ${linkReference}
-  }
 `;
 
 const contactSectionFields = /* groq */ `

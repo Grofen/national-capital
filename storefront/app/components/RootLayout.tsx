@@ -1,5 +1,6 @@
 "use client";
 
+import { Footer as FooterType, Header as HeaderType } from "@/sanity.types";
 import { Logo, Logomark } from "@/app/components/Logo";
 import { MotionConfig, motion, useReducedMotion } from "motion/react";
 import {
@@ -15,9 +16,7 @@ import { Button } from "@/app/components/Button";
 import { Container } from "@/app/components/Container";
 import { Footer } from "@/app/components/Footer";
 import { GridPattern } from "@/app/components/GridPattern";
-import { Header as HeaderType } from "@/sanity.types";
 import { Link } from "@/i18n/navigation";
-import { Offices } from "@/app/components/Offices";
 import PortableText from "@/app/components/PortableText";
 import { PortableTextBlock } from "next-sanity";
 import { SocialMedia } from "@/app/components/SocialMedia";
@@ -179,10 +178,12 @@ function RootLayoutInner({
   children,
   header,
   businessAddresses,
+  footer,
 }: {
   children: React.ReactNode;
   header: HeaderType;
   businessAddresses: PortableTextBlock[];
+  footer: FooterType;
 }) {
   let panelId = useId();
   let [expanded, setExpanded] = useState(false);
@@ -311,7 +312,7 @@ function RootLayoutInner({
           />
           <main className="w-full flex-auto">{children}</main>
 
-          <Footer />
+          <Footer footer={footer} />
         </motion.div>
       </motion.div>
     </MotionConfig>
@@ -322,10 +323,12 @@ export function RootLayout({
   children,
   header,
   businessAddresses,
+  footer,
 }: {
   children: React.ReactNode;
   header: HeaderType;
   businessAddresses: PortableTextBlock[];
+  footer: FooterType;
 }) {
   let pathname = usePathname();
   let [logoHovered, setLogoHovered] = useState(false);
@@ -336,6 +339,7 @@ export function RootLayout({
         key={pathname}
         header={header}
         businessAddresses={businessAddresses}
+        footer={footer}
       >
         {children}
       </RootLayoutInner>

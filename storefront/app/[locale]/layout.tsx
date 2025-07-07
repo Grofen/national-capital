@@ -4,7 +4,7 @@ import {
   description as defaultDescription,
   title as defaultTitle,
 } from "@/sanity/lib/demo";
-import { headerQuery, settingsQuery } from "@/sanity/lib/queries";
+import { footerQuery, headerQuery, settingsQuery } from "@/sanity/lib/queries";
 
 import { RootLayout as AppRootLayout } from "@/app/components/RootLayout";
 import DraftModeToast from "@/app/components/DraftModeToast";
@@ -104,20 +104,21 @@ export default async function LocaleLayout({
   const { isEnabled: isDraftMode } = await draftMode();
 
   // Fetch header and footer data in parallel
-  const [{ data: header }, { data: settings }] = await Promise.all([
-    sanityFetch({
-      query: headerQuery,
-      params: { language: locale },
-    }),
-    //   sanityFetch({
-    //     query: footerQuery,
-    //     params: { language: locale },
-    //   }),
-    sanityFetch({
-      query: settingsQuery,
-      params: { language: locale },
-    }),
-  ]);
+  const [{ data: header }, { data: footer }, { data: settings }] =
+    await Promise.all([
+      sanityFetch({
+        query: headerQuery,
+        params: { language: locale },
+      }),
+      sanityFetch({
+        query: footerQuery,
+        params: { language: locale },
+      }),
+      sanityFetch({
+        query: settingsQuery,
+        params: { language: locale },
+      }),
+    ]);
 
   return (
     <html
@@ -138,6 +139,7 @@ export default async function LocaleLayout({
           <AppRootLayout
             header={header as any}
             businessAddresses={settings?.businessAddresses as any}
+            footer={footer as any}
           >
             {children}
           </AppRootLayout>

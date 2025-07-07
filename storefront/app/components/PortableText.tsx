@@ -27,6 +27,7 @@ export default function CustomPortableText({
   value,
   boldClassName,
   ctaClassName,
+  linkClassName,
 }: {
   className?: string;
   headingClassName?: string;
@@ -35,6 +36,7 @@ export default function CustomPortableText({
   value: PortableTextBlock[];
   boldClassName?: string;
   ctaClassName?: string;
+  linkClassName?: string;
 }) {
   const components: PortableTextComponents = {
     block: {
@@ -116,7 +118,11 @@ export default function CustomPortableText({
     },
     marks: {
       link: ({ children, value: link }) => {
-        return <ResolvedLink link={link}>{children}</ResolvedLink>;
+        return (
+          <ResolvedLink link={link} className={linkClassName}>
+            {children}
+          </ResolvedLink>
+        );
       },
       strong: ({ children, value }) => {
         return <b className={cn(boldClassName)}>{children}</b>;
@@ -127,7 +133,11 @@ export default function CustomPortableText({
         const { buttonText, link } = value;
 
         return (
-          <Button link={link} className={ctaClassName} invert={invert}>
+          <Button
+            link={link}
+            className={cn(ctaClassName, "mr-2")}
+            invert={invert}
+          >
             {buttonText}
           </Button>
         );
