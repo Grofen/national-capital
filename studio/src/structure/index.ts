@@ -21,12 +21,12 @@ const TRANSLATED_NAVIGATIONS = [
     type: 'header',
     icon: MenuIcon,
   },
-  // {
-  //   id: 'footer',
-  //   title: 'Footer',
-  //   type: 'footer',
-  //   icon: InsertBelowIcon,
-  // },
+  {
+    id: 'footer',
+    title: 'Footer',
+    type: 'footer',
+    icon: InsertBelowIcon,
+  },
 ]
 
 export const structure: StructureResolver = (S: StructureBuilder) => {

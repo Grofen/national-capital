@@ -3,4 +3,5 @@ export const DISABLED_TYPES = [
   'assist.instruction.context',
   'translation.metadata',
   'header',
+  'footer',
 ]
