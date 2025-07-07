@@ -2,6 +2,27 @@ import { defineQuery } from "next-sanity";
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`);
 
+export const headerQuery =
+  defineQuery(`*[_type == "header" && language == $language][0]{
+  _id,
+  _type,
+  language,
+  ctaButton {
+    label,
+    link {
+      ...,
+      "page": page->slug.current,
+    }
+  },
+  navigationItems[] {
+    label,
+    link {
+      ...,
+      "page": page->slug.current,
+    }
+  }
+}`);
+
 const linkReference = /* groq */ `
   _type == "link" => {
     "page": page->slug.current,

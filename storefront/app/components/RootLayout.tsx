@@ -15,10 +15,14 @@ import { Button } from "@/app/components/Button";
 import { Container } from "@/app/components/Container";
 import { Footer } from "@/app/components/Footer";
 import { GridPattern } from "@/app/components/GridPattern";
+import { Header as HeaderType } from "@/sanity.types";
 import { Link } from "@/i18n/navigation";
 import { Offices } from "@/app/components/Offices";
+import PortableText from "@/app/components/PortableText";
+import { PortableTextBlock } from "next-sanity";
 import { SocialMedia } from "@/app/components/SocialMedia";
 import clsx from "clsx";
+import { linkResolver } from "@/sanity/lib/utils";
 import { usePathname } from "next/navigation";
 
 const RootLayoutContext = createContext<{
@@ -50,6 +54,7 @@ function Header({
   onToggle,
   toggleRef,
   invert = false,
+  header,
 }: {
   panelId: string;
   icon: React.ComponentType<{ className?: string }>;
@@ -57,6 +62,7 @@ function Header({
   onToggle: () => void;
   toggleRef: React.RefObject<HTMLButtonElement | null>;
   invert?: boolean;
+  header: HeaderType;
 }) {
   let { logoHovered, setLogoHovered } = useContext(RootLayoutContext)!;
 
@@ -81,9 +87,11 @@ function Header({
           />
         </Link>
         <div className="flex items-center gap-x-8">
-          <Button href="/contact" invert={invert}>
-            Contact us
-          </Button>
+          {header?.ctaButton && (
+            <Button invert={invert} link={header.ctaButton.link}>
+              {header.ctaButton.label}
+            </Button>
+          )}
           <button
             ref={toggleRef}
             type="button"
@@ -139,28 +147,49 @@ function NavigationItem({
   );
 }
 
-function Navigation() {
+function Navigation({ header }: { header: HeaderType }) {
+  const navigationItems = header.navigationItems || [];
+
+  // Group navigation items into pairs (2 items per row)
+  const groupedItems = [];
+  for (let i = 0; i < navigationItems.length; i += 2) {
+    groupedItems.push(navigationItems.slice(i, i + 2));
+  }
+
   return (
     <nav className="mt-px font-display text-5xl font-medium tracking-tight text-white">
-      <NavigationRow>
-        <NavigationItem href="/work">Our Work</NavigationItem>
-        <NavigationItem href="/about">About Us</NavigationItem>
-      </NavigationRow>
-      <NavigationRow>
-        <NavigationItem href="/process">Our Process</NavigationItem>
-        <NavigationItem href="/blog">Blog</NavigationItem>
-      </NavigationRow>
+      {groupedItems.map((group, index) => (
+        <NavigationRow key={index}>
+          {group.map((item, _index) => {
+            const href = linkResolver(item.link) || "#";
+
+            return (
+              <NavigationItem key={_index} href={href}>
+                {item.label}
+              </NavigationItem>
+            );
+          })}
+        </NavigationRow>
+      ))}
     </nav>
   );
 }
 
-function RootLayoutInner({ children }: { children: React.ReactNode }) {
+function RootLayoutInner({
+  children,
+  header,
+  businessAddresses,
+}: {
+  children: React.ReactNode;
+  header: HeaderType;
+  businessAddresses: PortableTextBlock[];
+}) {
   let panelId = useId();
   let [expanded, setExpanded] = useState(false);
   let [isTransitioning, setIsTransitioning] = useState(false);
-  let openRef = useRef<React.ElementRef<"button">>(null);
-  let closeRef = useRef<React.ElementRef<"button">>(null);
-  let navRef = useRef<React.ElementRef<"div">>(null);
+  let openRef = useRef<HTMLButtonElement>(null);
+  let closeRef = useRef<HTMLButtonElement>(null);
+  let navRef = useRef<HTMLDivElement>(null);
   let shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -199,6 +228,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
             icon={MenuIcon}
             toggleRef={openRef}
             expanded={expanded}
+            header={header}
             onToggle={() => {
               setIsTransitioning(true);
               setExpanded((expanded) => !expanded);
@@ -221,6 +251,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           <motion.div layout className="bg-primary-700">
             <div ref={navRef} className="bg-primary-900 pt-14 pb-16">
               <Header
+                header={header}
                 invert
                 panelId={panelId}
                 icon={XIcon}
@@ -235,19 +266,22 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
                 }}
               />
             </div>
-            <Navigation />
+            <Navigation header={header} />
             <div className="relative bg-primary-900 before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-primary-700">
               <Container>
                 <div className="grid grid-cols-1 gap-y-10 pt-10 pb-16 sm:grid-cols-2 sm:pt-16">
-                  <div>
-                    <h2 className="font-display text-base font-semibold text-white">
+                  <PortableText
+                    value={businessAddresses}
+                    invert
+                    headingClassName="mb-6"
+                  />
+                  {/* <h2 className="font-display text-base font-semibold text-white">
                       Our offices
                     </h2>
                     <Offices
                       invert
                       className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2"
-                    />
-                  </div>
+                    /> */}
                   <div className="sm:border-l sm:border-transparent sm:pl-16">
                     <h2 className="font-display text-base font-semibold text-white">
                       Follow us
@@ -284,13 +318,27 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function RootLayout({ children }: { children: React.ReactNode }) {
+export function RootLayout({
+  children,
+  header,
+  businessAddresses,
+}: {
+  children: React.ReactNode;
+  header: HeaderType;
+  businessAddresses: PortableTextBlock[];
+}) {
   let pathname = usePathname();
   let [logoHovered, setLogoHovered] = useState(false);
 
   return (
     <RootLayoutContext.Provider value={{ logoHovered, setLogoHovered }}>
-      <RootLayoutInner key={pathname}>{children}</RootLayoutInner>
+      <RootLayoutInner
+        key={pathname}
+        header={header}
+        businessAddresses={businessAddresses}
+      >
+        {children}
+      </RootLayoutInner>
     </RootLayoutContext.Provider>
   );
 }

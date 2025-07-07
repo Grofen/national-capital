@@ -243,19 +243,6 @@ export type Service = {
   page: Link;
 };
 
-export type Link = {
-  _type: "link";
-  linkType?: "href" | "page";
-  href?: string;
-  page?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "page";
-  };
-  openInNewTab?: boolean;
-};
-
 export type Media = {
   _type: "media";
   asset?: {
@@ -313,6 +300,7 @@ export type Settings = {
     email: string;
     phone: string;
   };
+  businessAddresses: BlockContent;
   address?: {
     addressLine: string;
     latitude?: number;
@@ -352,7 +340,43 @@ export type InternationalizedArrayReferenceValue = {
     _type: "reference";
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "page";
+  } | {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "header";
   };
+};
+
+export type Header = {
+  _id: string;
+  _type: "header";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  language?: Language;
+  navigationItems?: Array<{
+    label: string;
+    link: Link;
+    _key: string;
+  }>;
+  ctaButton?: {
+    label: string;
+    link: Link;
+  };
+};
+
+export type Link = {
+  _type: "link";
+  linkType?: "href" | "page";
+  href?: string;
+  page?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "page";
+  };
+  openInNewTab?: boolean;
 };
 
 export type Page = {
@@ -647,7 +671,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = ServicesSection | Language | InfoSection | ContactSection | ClientsSection | CallToAction | BlockContent | Client | Service | Link | Media | Settings | TranslationMetadata | InternationalizedArrayReferenceValue | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = ServicesSection | Language | InfoSection | ContactSection | ClientsSection | CallToAction | BlockContent | Client | Service | Media | Settings | TranslationMetadata | InternationalizedArrayReferenceValue | Header | Link | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -695,6 +719,7 @@ export type SettingsQueryResult = {
     email: string;
     phone: string;
   };
+  businessAddresses: BlockContent;
   address?: {
     addressLine: string;
     latitude?: number;
@@ -714,8 +739,35 @@ export type SettingsQueryResult = {
     _key: string;
   }>;
 } | null;
+// Variable: headerQuery
+// Query: *[_type == "header" && language == $language][0]{  _id,  _type,  language,  ctaButton {    label,    link {      ...,      "page": page->slug.current,    }  },  navigationItems[] {    label,    link {      ...,      "page": page->slug.current,    }  }}
+export type HeaderQueryResult = {
+  _id: string;
+  _type: "header";
+  language: Language | null;
+  ctaButton: {
+    label: string;
+    link: {
+      _type: "link";
+      linkType?: "href" | "page";
+      href?: string;
+      page: string | null;
+      openInNewTab?: boolean;
+    };
+  } | null;
+  navigationItems: Array<{
+    label: string;
+    link: {
+      _type: "link";
+      linkType?: "href" | "page";
+      href?: string;
+      page: string | null;
+      openInNewTab?: boolean;
+    };
+  }> | null;
+} | null;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,        "page": page->slug.current,      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo,    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,        "page": page->slug.current,      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo    }  }
+// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,          _type == "link" => {    "page": page->slug.current,  }      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo,    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,          _type == "link" => {    "page": page->slug.current,  }      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo    }  }
 export type GetPageQueryResult = {
   _id: string;
   _type: "page";
@@ -898,6 +950,14 @@ export type GetPageQueryResult = {
   }> | null;
   seo: Seo | null;
   translations: Array<{
+    _id: string;
+    _type: "header";
+    language: Language | null;
+    title: null;
+    slug: null;
+    pageBuilder: null;
+    seo: null;
+  } | {
     _id: string;
     _type: "page";
     language: Language | null;
@@ -1103,7 +1163,8 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \"page\": page->slug.current,\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \"page\": page->slug.current,\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
+    "*[_type == \"header\" && language == $language][0]{\n  _id,\n  _type,\n  language,\n  ctaButton {\n    label,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  navigationItems[] {\n    label,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  }\n}": HeaderQueryResult;
+    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"page\" && defined(slug.current) && slug.current != \"/\"]{\n    \"slug\": slug.current,\n    language\n  }\n": SitemapDataResult | PagesSlugsForStaticGenerationResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
   }
