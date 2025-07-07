@@ -20,6 +20,8 @@ interface Client {
 }
 
 const ClientLogo = ({ client }: { client: Client }) => {
+  if (!client?.logo) return null;
+
   const image = urlForImage(client.logo)?.width(100).height(100).url();
 
   if (!image) return null;
