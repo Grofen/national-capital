@@ -3,6 +3,7 @@ import * as demo from '../../lib/initialValues'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import {CogIcon} from '@sanity/icons'
+import {toPlainText} from '@portabletext/react'
 
 /**
  * Settings schema Singleton.  Singletons are single documents that are displayed not in a collection, handy for things like site settings and other global configurations.
@@ -118,11 +119,17 @@ export const settings = defineType({
       ],
     }),
     defineField({
+      name: 'businessAddresses',
+      title: 'Business Addresses',
+      type: 'blockContent',
+      description: 'Addresses for your business. This will be used throughout the website.',
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'address',
-      title: 'Address',
+      title: 'Address For Map',
       type: 'object',
-      description:
-        'Address for your business. This will be displayed in the footer or any other place you want to display it.',
+      description: 'Address for your business. This is used for the map on the contact page.',
       fields: [
         defineField({
           name: 'addressLine',

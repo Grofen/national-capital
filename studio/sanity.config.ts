@@ -118,7 +118,7 @@ export default defineConfig({
     documentInternationalization({
       // Required configuration
       supportedLanguages,
-      schemaTypes: ['page'],
+      schemaTypes: ['page', 'header'],
     }),
   ],
 

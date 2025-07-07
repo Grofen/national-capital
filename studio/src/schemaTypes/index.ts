@@ -3,6 +3,7 @@ import {callToAction} from './objects/callToAction'
 import {client} from './documents/client'
 import {clientsSection} from './objects/clientsSection'
 import {contactSection} from './objects/contactSection'
+import {header} from './singletons/header'
 import {infoSection} from './objects/infoSection'
 import {languageField} from './objects/languageField'
 import {languageSlug} from './objects/languageSlug'
@@ -18,6 +19,7 @@ import {settings} from './singletons/settings'
 
 export const schemaTypes = [
   // Singletons
+  header,
   settings,
 
   // Documents

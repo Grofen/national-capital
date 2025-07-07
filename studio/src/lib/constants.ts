@@ -1,1 +1,6 @@
-export const DISABLED_TYPES = ['settings', 'assist.instruction.context', 'translation.metadata']
+export const DISABLED_TYPES = [
+  'settings',
+  'assist.instruction.context',
+  'translation.metadata',
+  'header',
+]

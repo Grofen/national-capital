@@ -1,6 +1,6 @@
+import {CogIcon, InsertBelowIcon, MenuIcon} from '@sanity/icons'
 import type {ListItemBuilder, StructureBuilder, StructureResolver} from 'sanity/structure'
 
-import {CogIcon} from '@sanity/icons'
 import {DISABLED_TYPES} from '../lib/constants'
 import {DocumentIcon} from '@sanity/icons'
 import pluralize from 'pluralize-esm'
@@ -13,6 +13,21 @@ import {supportedLanguages} from '../lib/i18n'
  */
 
 const INTERNATIONALIZED_TYPES = ['page']
+
+const TRANSLATED_NAVIGATIONS = [
+  {
+    id: 'header',
+    title: 'Navigation Bar',
+    type: 'header',
+    icon: MenuIcon,
+  },
+  // {
+  //   id: 'footer',
+  //   title: 'Footer',
+  //   type: 'footer',
+  //   icon: InsertBelowIcon,
+  // },
+]
 
 export const structure: StructureResolver = (S: StructureBuilder) => {
   return S.list()
@@ -70,6 +85,29 @@ export const structure: StructureResolver = (S: StructureBuilder) => {
         .map((listItem: ListItemBuilder) => {
           return listItem.title(pluralize(listItem.getTitle() as string))
         }),
+
+      S.divider(),
+
+      // Translated Singletons
+      ...TRANSLATED_NAVIGATIONS.map((navigation) =>
+        S.listItem()
+          .title(navigation.title)
+          .icon(navigation.icon)
+          .id(navigation.id)
+          .child(
+            S.list()
+              .title(navigation.title)
+              .id(navigation.id)
+              .items([
+                ...supportedLanguages.map((language) =>
+                  S.documentListItem()
+                    .schemaType(navigation.type)
+                    .title(`${language.title} ${navigation.title}`)
+                    .id(`${navigation.id}-${language.id}`),
+                ),
+              ]),
+          ),
+      ),
 
       S.divider(),
 
