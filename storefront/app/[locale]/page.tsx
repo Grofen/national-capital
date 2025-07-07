@@ -8,7 +8,6 @@ import { notFound } from "next/navigation";
 import { Container } from "@/app/components/Container";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 import { FadeIn } from "@/app/components/FadeIn";
-import { CaseStudies } from "@/app/components/sections/CaseStudies";
 
 type Props = {
   params: Promise<{ locale: string }>;

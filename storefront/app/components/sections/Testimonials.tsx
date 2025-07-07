@@ -107,7 +107,7 @@ const Testimonials = () => {
                   What our clients say
                 </h2>
                 <p className="mt-4 text-lg text-neutral-600">
-                  Don't just take our word for it — hear from some of our
+                  Don&apos;t just take our word for it — hear from some of our
                   satisfied clients.
                 </p>
               </div>

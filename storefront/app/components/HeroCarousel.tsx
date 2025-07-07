@@ -137,7 +137,7 @@ export function HeroCarousel({
 
     window.addEventListener("keydown", handleKeyPress);
     return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [isPlaying]);
+  }, [isPlaying, paginate]);
 
   const currentSlide = slides[imageIndex];
 
