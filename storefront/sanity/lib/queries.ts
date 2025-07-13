@@ -124,6 +124,18 @@ const servicesSectionFields = /* groq */ `
   }
 `;
 
+const imageTextFields = /* groq */ `
+  heading[]{
+    ${blockContentFields}
+  },
+  image {
+    ...,
+    "url": asset->url,
+    "metadata": asset->metadata,
+    "dimensions": asset->metadata.dimensions
+  }
+`;
+
 const pageFields = /* groq */ `
   _id,
   _type,
@@ -135,6 +147,9 @@ const pageFields = /* groq */ `
     ${contactSectionFields},
     ${clientsSectionFields},
     ${servicesSectionFields},
+    _type == "imageText" => {
+      ${imageTextFields}
+    },
     _type == "callToAction" => {
       ${linkFields},
     },

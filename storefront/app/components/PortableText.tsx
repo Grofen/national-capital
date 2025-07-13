@@ -28,6 +28,7 @@ export default function CustomPortableText({
   boldClassName,
   ctaClassName,
   linkClassName,
+  eyebrowClassName,
 }: {
   className?: string;
   headingClassName?: string;
@@ -37,32 +38,20 @@ export default function CustomPortableText({
   boldClassName?: string;
   ctaClassName?: string;
   linkClassName?: string;
+  eyebrowClassName?: string;
 }) {
   const components: PortableTextComponents = {
     block: {
       h1: ({ children, value }) => (
         // Add an anchor to the h1
-        <h1 className="group relative">
+        <h1
+          className={cn(
+            "font-display text-5xl font-medium tracking-tight text-balance sm:text-6xl",
+            invert ? "text-white" : "text-neutral-950",
+            headingClassName
+          )}
+        >
           {children}
-          <a
-            href={`#${value?._key}`}
-            className="absolute left-0 top-0 bottom-0 -ml-6 flex items-center opacity-0 group-hover:opacity-100 transition-opacity"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-              />
-            </svg>
-          </a>
         </h1>
       ),
       h2: ({ children, value }) => {
@@ -115,6 +104,19 @@ export default function CustomPortableText({
           </p>
         );
       },
+      eyebrow: ({ children, value }) => {
+        return (
+          <span
+            className={cn(
+              "block font-display text-base font-semibold",
+              invert ? "text-white" : "text-neutral-950",
+              eyebrowClassName
+            )}
+          >
+            {children}
+          </span>
+        );
+      },
     },
     marks: {
       link: ({ children, value: link }) => {
@@ -126,6 +128,18 @@ export default function CustomPortableText({
       },
       strong: ({ children, value }) => {
         return <b className={cn(boldClassName)}>{children}</b>;
+      },
+      em: ({ children, value }) => {
+        return <em className="italic">{children}</em>;
+      },
+      left: ({ children, value }) => {
+        return <span className="block text-left">{children}</span>;
+      },
+      center: ({ children, value }) => {
+        return <span className="block text-center">{children}</span>;
+      },
+      right: ({ children, value }) => {
+        return <span className="block text-right">{children}</span>;
       },
     },
     types: {
@@ -146,11 +160,7 @@ export default function CustomPortableText({
   };
 
   return (
-    <div
-      className={["prose prose-a:text-red-500", className]
-        .filter(Boolean)
-        .join(" ")}
-    >
+    <div className={cn(className)}>
       <PortableText components={components} value={value} />
     </div>
   );

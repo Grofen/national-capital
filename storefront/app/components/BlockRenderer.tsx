@@ -2,9 +2,12 @@ import ClientsSection from "@/app/components/sections/ClientsSection";
 import ContactSection from "@/app/components/sections/ContactSection";
 import Cta from "@/app/components/Cta";
 import CultureSection from "@/app/components/sections/CultureSection";
+import ImageText from "@/app/components/ImageText";
 import Info from "@/app/components/InfoSection";
+import { PageIntro } from "@/app/components/PageIntro";
 import React from "react";
 import ServicesSection from "@/app/components/sections/ServicesSection";
+import Stats from "@/app/components/StatList";
 import { dataAttr } from "@/sanity/lib/utils";
 
 type BlocksType = {
@@ -24,12 +27,15 @@ type BlockProps = {
 };
 
 const Blocks: BlocksType = {
-  callToAction: Cta,
-  infoSection: Info,
-  contactSection: ContactSection,
-  servicesSection: ServicesSection,
   clientsSection: ClientsSection,
+  callToAction: Cta,
+  contactSection: ContactSection,
   cultureSection: CultureSection,
+  infoSection: Info,
+  pageIntro: PageIntro,
+  servicesSection: ServicesSection,
+  statsList: Stats,
+  imageText: ImageText,
 };
 
 /**

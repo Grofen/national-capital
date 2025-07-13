@@ -13,6 +13,16 @@
  */
 
 // Source: schema.json
+export type StatsList = {
+  _type: "statsList";
+  stats?: Array<{
+    number: string;
+    label: string;
+    _type: "stat";
+    _key: string;
+  }>;
+};
+
 export type ServicesSection = {
   _type: "servicesSection";
   eyebrow: string;
@@ -23,7 +33,7 @@ export type ServicesSection = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       linkType?: "href" | "page";
@@ -53,20 +63,97 @@ export type ServicesSection = {
   }>;
 };
 
-export type Language = string;
-
-export type InfoSection = {
-  _type: "infoSection";
-  heading?: string;
-  subheading?: string;
-  content?: Array<{
+export type PageIntro = {
+  _type: "pageIntro";
+  centered?: boolean;
+  heading: Array<{
     children?: Array<{
       marks?: Array<string>;
       text?: string;
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      linkType?: "href" | "page";
+      href?: string;
+      page?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "page";
+      };
+      openInNewTab?: boolean;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    _key: string;
+  } & CallToAction>;
+};
+
+export type Language = string;
+
+export type InfoSection = {
+  _type: "infoSection";
+  heading: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      linkType?: "href" | "page";
+      href?: string;
+      page?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "page";
+      };
+      openInNewTab?: boolean;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  } | {
+    _key: string;
+  } & CallToAction>;
+};
+
+export type ImageText = {
+  _type: "imageText";
+  swap?: boolean;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
+  heading: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       linkType?: "href" | "page";
@@ -99,7 +186,7 @@ export type CultureSection = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       linkType?: "href" | "page";
@@ -128,7 +215,7 @@ export type CultureSection = {
         _type: "span";
         _key: string;
       }>;
-      style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+      style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
       listItem?: "bullet" | "number";
       markDefs?: Array<{
         linkType?: "href" | "page";
@@ -163,7 +250,7 @@ export type ContactSection = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       linkType?: "href" | "page";
@@ -191,7 +278,7 @@ export type ContactSection = {
       _type: "span";
       _key: string;
     }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
     listItem?: "bullet" | "number";
     markDefs?: Array<{
       linkType?: "href" | "page";
@@ -239,7 +326,7 @@ export type BlockContent = Array<{
     _type: "span";
     _key: string;
   }>;
-  style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+  style?: "eyebrow" | "normal" | "h1" | "h2" | "h3" | "h4";
   listItem?: "bullet" | "number";
   markDefs?: Array<{
     linkType?: "href" | "page";
@@ -528,6 +615,8 @@ export type Page = {
   };
   pageBuilder?: Array<{
     _key: string;
+  } & PageIntro | {
+    _key: string;
   } & InfoSection | {
     _key: string;
   } & ContactSection | {
@@ -536,7 +625,11 @@ export type Page = {
     _key: string;
   } & ServicesSection | {
     _key: string;
-  } & CultureSection>;
+  } & CultureSection | {
+    _key: string;
+  } & StatsList | {
+    _key: string;
+  } & ImageText>;
   seo?: Seo;
 };
 
@@ -807,7 +900,7 @@ export type SanityAssetSourceData = {
   url?: string;
 };
 
-export type AllSanitySchemaTypes = ServicesSection | Language | InfoSection | CultureSection | ContactSection | ClientsSection | CallToAction | BlockContent | Client | Service | Media | Settings | SanityVideo | SanityVideoAsset | SanityVideoMetadata | TranslationMetadata | InternationalizedArrayReferenceValue | Footer | Header | Link | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
+export type AllSanitySchemaTypes = StatsList | ServicesSection | PageIntro | Language | InfoSection | ImageText | CultureSection | ContactSection | ClientsSection | CallToAction | BlockContent | Client | Service | Media | Settings | SanityVideo | SanityVideoAsset | SanityVideoMetadata | TranslationMetadata | InternationalizedArrayReferenceValue | Footer | Header | Link | Page | Seo | LanguageSlug | InternationalizedArrayReference | SanityAssistInstructionTask | SanityAssistTaskStatus | SanityAssistSchemaTypeAnnotations | SanityAssistOutputType | SanityAssistOutputField | SanityAssistInstructionContext | AssistInstructionContext | SanityAssistInstructionUserInput | SanityAssistInstructionPrompt | SanityAssistInstructionFieldRef | SanityAssistInstruction | SanityAssistSchemaTypeField | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./sanity/lib/queries.ts
 // Variable: settingsQuery
@@ -931,7 +1024,7 @@ export type FooterQueryResult = {
       _type: "span";
       _key: string;
     }>;
-    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
     listItem?: "bullet" | "number";
     markDefs: Array<{
       linkType?: "href" | "page";
@@ -953,7 +1046,7 @@ export type FooterQueryResult = {
   }> | null;
 } | null;
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,          _type == "link" => {    "page": page->slug.current,  }      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo,    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,          _type == "link" => {    "page": page->slug.current,  }      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo    }  }
+// Query: *[_type == 'page' && slug.current == $slug && language == $language][0]{      _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,          _type == "link" => {    "page": page->slug.current,  }      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "imageText" => {        heading[]{      ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }  },  image {    ...,    "url": asset->url,    "metadata": asset->metadata,    "dimensions": asset->metadata.dimensions  }    },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo,    "translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{        _id,  _type,  language,  title,  slug,  "pageBuilder": pageBuilder[]{    ...,      _type == "contactSection" => {    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    address[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    }  },      _type == "clientsSection" => {    heading,    clients[]-> {      _id,      name,      logo {        ...,          "url": asset->url,      }    }  },      _type == "servicesSection" => {    eyebrow,    heading[]{        ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }    },    services[]-> {      _id,      title,      description,      page {        ...,          _type == "link" => {    "page": page->slug.current,  }      },      media {        ...,          "url": asset->url,        "metadata": asset->metadata,        "dimensions": asset->metadata.dimensions      }    }  },    _type == "imageText" => {        heading[]{      ...,  _type == "cta" => {    ...,    link {      ...,      "page": page->slug.current,    }  },  markDefs[]{    ...,      _type == "link" => {    "page": page->slug.current,  }  }  },  image {    ...,    "url": asset->url,    "metadata": asset->metadata,    "dimensions": asset->metadata.dimensions  }    },    _type == "callToAction" => {        link {    ...,      _type == "link" => {    "page": page->slug.current,  }  },    },    _type == "infoSection" => {      content[]{        ...,        markDefs[]{          ...,            _type == "link" => {    "page": page->slug.current,  }        }      }    },  },  seo    }  }
 export type GetPageQueryResult = {
   _id: string;
   _type: "page";
@@ -995,7 +1088,7 @@ export type GetPageQueryResult = {
         _type: "span";
         _key: string;
       }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
       listItem?: "bullet" | "number";
       markDefs: Array<{
         linkType?: "href" | "page";
@@ -1022,7 +1115,7 @@ export type GetPageQueryResult = {
         _type: "span";
         _key: string;
       }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
       listItem?: "bullet" | "number";
       markDefs: Array<{
         linkType?: "href" | "page";
@@ -1055,7 +1148,7 @@ export type GetPageQueryResult = {
         _type: "span";
         _key: string;
       }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
       listItem?: "bullet" | "number";
       markDefs?: Array<{
         linkType?: "href" | "page";
@@ -1084,7 +1177,7 @@ export type GetPageQueryResult = {
           _type: "span";
           _key: string;
         }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
         markDefs?: Array<{
           linkType?: "href" | "page";
@@ -1108,17 +1201,32 @@ export type GetPageQueryResult = {
     }>;
   } | {
     _key: string;
-    _type: "infoSection";
-    heading?: string;
-    subheading?: string;
-    content: Array<{
+    _type: "imageText";
+    swap?: boolean;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      url: string | null;
+      metadata: SanityImageMetadata | null;
+      dimensions: SanityImageDimensions | null;
+    };
+    heading: Array<{
       children?: Array<{
         marks?: Array<string>;
         text?: string;
         _type: "span";
         _key: string;
       }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
       listItem?: "bullet" | "number";
       markDefs: Array<{
         linkType?: "href" | "page";
@@ -1137,7 +1245,71 @@ export type GetPageQueryResult = {
       buttonText?: string;
       link?: Link;
       markDefs: null;
-    }> | null;
+    }>;
+  } | {
+    _key: string;
+    _type: "infoSection";
+    heading: Array<{
+      _key: string;
+    } & CallToAction | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        linkType?: "href" | "page";
+        href?: string;
+        page?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "page";
+        };
+        openInNewTab?: boolean;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    content: null;
+  } | {
+    _key: string;
+    _type: "pageIntro";
+    centered?: boolean;
+    heading: Array<{
+      _key: string;
+    } & CallToAction | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        linkType?: "href" | "page";
+        href?: string;
+        page?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "page";
+        };
+        openInNewTab?: boolean;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
   } | {
     _key: string;
     _type: "servicesSection";
@@ -1149,7 +1321,7 @@ export type GetPageQueryResult = {
         _type: "span";
         _key: string;
       }>;
-      style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+      style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
       listItem?: "bullet" | "number";
       markDefs: Array<{
         linkType?: "href" | "page";
@@ -1196,6 +1368,15 @@ export type GetPageQueryResult = {
         metadata: SanityImageMetadata | null;
         dimensions: SanityImageDimensions | null;
       };
+    }>;
+  } | {
+    _key: string;
+    _type: "statsList";
+    stats?: Array<{
+      number: string;
+      label: string;
+      _type: "stat";
+      _key: string;
     }>;
   }> | null;
   seo: Seo | null;
@@ -1256,7 +1437,7 @@ export type GetPageQueryResult = {
           _type: "span";
           _key: string;
         }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
         markDefs: Array<{
           linkType?: "href" | "page";
@@ -1283,7 +1464,7 @@ export type GetPageQueryResult = {
           _type: "span";
           _key: string;
         }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
         markDefs: Array<{
           linkType?: "href" | "page";
@@ -1316,7 +1497,7 @@ export type GetPageQueryResult = {
           _type: "span";
           _key: string;
         }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
         markDefs?: Array<{
           linkType?: "href" | "page";
@@ -1345,7 +1526,7 @@ export type GetPageQueryResult = {
             _type: "span";
             _key: string;
           }>;
-          style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+          style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
           listItem?: "bullet" | "number";
           markDefs?: Array<{
             linkType?: "href" | "page";
@@ -1369,17 +1550,32 @@ export type GetPageQueryResult = {
       }>;
     } | {
       _key: string;
-      _type: "infoSection";
-      heading?: string;
-      subheading?: string;
-      content: Array<{
+      _type: "imageText";
+      swap?: boolean;
+      image: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        url: string | null;
+        metadata: SanityImageMetadata | null;
+        dimensions: SanityImageDimensions | null;
+      };
+      heading: Array<{
         children?: Array<{
           marks?: Array<string>;
           text?: string;
           _type: "span";
           _key: string;
         }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
         markDefs: Array<{
           linkType?: "href" | "page";
@@ -1398,7 +1594,71 @@ export type GetPageQueryResult = {
         buttonText?: string;
         link?: Link;
         markDefs: null;
-      }> | null;
+      }>;
+    } | {
+      _key: string;
+      _type: "infoSection";
+      heading: Array<{
+        _key: string;
+      } & CallToAction | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          linkType?: "href" | "page";
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "page";
+          };
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+      content: null;
+    } | {
+      _key: string;
+      _type: "pageIntro";
+      centered?: boolean;
+      heading: Array<{
+        _key: string;
+      } & CallToAction | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          linkType?: "href" | "page";
+          href?: string;
+          page?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "page";
+          };
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
     } | {
       _key: string;
       _type: "servicesSection";
@@ -1410,7 +1670,7 @@ export type GetPageQueryResult = {
           _type: "span";
           _key: string;
         }>;
-        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        style?: "eyebrow" | "h1" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
         markDefs: Array<{
           linkType?: "href" | "page";
@@ -1458,6 +1718,15 @@ export type GetPageQueryResult = {
           dimensions: SanityImageDimensions | null;
         };
       }>;
+    } | {
+      _key: string;
+      _type: "statsList";
+      stats?: Array<{
+        number: string;
+        label: string;
+        _type: "stat";
+        _key: string;
+      }>;
     }> | null;
     seo: Seo | null;
   } | null>;
@@ -1487,7 +1756,7 @@ declare module "@sanity/client" {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "*[_type == \"header\" && language == $language][0]{\n  _id,\n  _type,\n  language,\n  ctaButton {\n    label,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  navigationItems[] {\n    label,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  }\n}": HeaderQueryResult;
     "*[_type == \"footer\" && language == $language][0]{\n  _id,\n  _type,\n  language,\n  navigationSections[] {\n    ...,\n    links[] {\n      ...,\n      link {\n        ...,\n        \"page\": page->slug.current,\n      }\n    }\n  },\n  contactSection[]{\n    \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n  }\n}": FooterQueryResult;
-    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
+    "\n  *[_type == 'page' && slug.current == $slug && language == $language][0]{\n    \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"imageText\" => {\n      \n  heading[]{\n    \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n  },\n  image {\n    ...,\n    \"url\": asset->url,\n    \"metadata\": asset->metadata,\n    \"dimensions\": asset->metadata.dimensions\n  }\n\n    },\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n,\n    \"translations\": *[_type == \"translation.metadata\" && references(^._id)].translations[].value->{\n      \n  _id,\n  _type,\n  language,\n  title,\n  slug,\n  \"pageBuilder\": pageBuilder[]{\n    ...,\n    \n  _type == \"contactSection\" => {\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    address[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    }\n  }\n,\n    \n  _type == \"clientsSection\" => {\n    heading,\n    clients[]-> {\n      _id,\n      name,\n      logo {\n        ...,\n        \n  \"url\": asset->url,\n\n      }\n    }\n  }\n,\n    \n  _type == \"servicesSection\" => {\n    eyebrow,\n    heading[]{\n      \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n    },\n    services[]-> {\n      _id,\n      title,\n      description,\n      page {\n        ...,\n        \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n      },\n      media {\n        ...,\n        \n  \"url\": asset->url,\n\n        \"metadata\": asset->metadata,\n        \"dimensions\": asset->metadata.dimensions\n      }\n    }\n  }\n,\n    _type == \"imageText\" => {\n      \n  heading[]{\n    \n  ...,\n  _type == \"cta\" => {\n    ...,\n    link {\n      ...,\n      \"page\": page->slug.current,\n    }\n  },\n  markDefs[]{\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n\n  },\n  image {\n    ...,\n    \"url\": asset->url,\n    \"metadata\": asset->metadata,\n    \"dimensions\": asset->metadata.dimensions\n  }\n\n    },\n    _type == \"callToAction\" => {\n      \n  link {\n    ...,\n    \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n  }\n,\n    },\n    _type == \"infoSection\" => {\n      content[]{\n        ...,\n        markDefs[]{\n          ...,\n          \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n  }\n\n        }\n      }\n    },\n  },\n  seo\n\n    }\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"page\" && defined(slug.current) && slug.current != \"/\"]{\n    \"slug\": slug.current,\n    language\n  }\n": SitemapDataResult | PagesSlugsForStaticGenerationResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
   }
