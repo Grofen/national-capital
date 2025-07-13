@@ -3,6 +3,7 @@ import {callToAction} from './objects/callToAction'
 import {client} from './documents/client'
 import {clientsSection} from './objects/clientsSection'
 import {contactSection} from './objects/contactSection'
+import {cultureSection} from './objects/cultureSection'
 import {footer} from './singletons/footer'
 import {header} from './singletons/header'
 import {infoSection} from './objects/infoSection'
@@ -34,13 +35,14 @@ export const schemaTypes = [
   // Objects
   blockContent,
   callToAction,
-  media,
   clientsSection,
   contactSection,
+  cultureSection,
   infoSection,
   languageField,
   languageSlug,
   link,
+  media,
   seo,
   servicesSection,
 ]
