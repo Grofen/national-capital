@@ -1,14 +1,18 @@
 import {defineField, defineType} from 'sanity'
 
-import {TextIcon} from '@sanity/icons'
 import {toPlainText} from '@portabletext/react'
 
-export const infoSection = defineType({
-  name: 'infoSection',
-  title: 'Info Section',
+export const pageIntro = defineType({
+  name: 'pageIntro',
+  title: 'Page Intro',
   type: 'object',
-  icon: TextIcon,
   fields: [
+    defineField({
+      name: 'centered',
+      title: 'Centered (optional)',
+      type: 'boolean',
+      description: 'Whether the page intro is centered',
+    }),
     defineField({
       name: 'heading',
       title: 'Heading (required)',
@@ -20,11 +24,12 @@ export const infoSection = defineType({
   preview: {
     select: {
       title: 'heading',
+      subtitle: 'centered',
     },
-    prepare({title}) {
+    prepare({title, subtitle}) {
       return {
-        title: title ? toPlainText(title) : 'Untitled Info Section',
-        subtitle: 'Info Section',
+        title: title ? toPlainText(title) : 'Untitled Page Intro',
+        subtitle: `Page Intro ${subtitle ? '(Centered)' : '(Not centered)'}`,
       }
     },
   },

@@ -21,7 +21,22 @@ export const blockContent = defineType({
   of: [
     defineArrayMember({
       type: 'block',
+      styles: [
+        {title: 'Eyebrow', value: 'eyebrow'},
+        {title: 'Normal', value: 'normal'},
+        {title: 'Heading 1', value: 'h1'},
+        {title: 'Heading 2', value: 'h2'},
+        {title: 'Heading 3', value: 'h3'},
+        {title: 'Heading 4', value: 'h4'},
+      ],
       marks: {
+        decorators: [
+          {title: 'Strong', value: 'strong'},
+          {title: 'Emphasis', value: 'em'},
+          {title: 'Left', value: 'left'},
+          {title: 'Center', value: 'center'},
+          {title: 'Right', value: 'right'},
+        ],
         annotations: [
           {
             name: 'link',

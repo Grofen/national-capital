@@ -48,11 +48,14 @@ export const page = defineType({
       title: 'Page builder',
       type: 'array',
       of: [
+        defineArrayMember({type: 'pageIntro'}),
         defineArrayMember({type: 'infoSection'}),
         defineArrayMember({type: 'contactSection'}),
         defineArrayMember({type: 'clientsSection'}),
         defineArrayMember({type: 'servicesSection'}),
         defineArrayMember({type: 'cultureSection'}),
+        defineArrayMember({type: 'statsList'}),
+        defineArrayMember({type: 'imageText'}),
       ],
       options: {
         insertMenu: {
