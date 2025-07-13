@@ -1,6 +1,7 @@
 import ClientsSection from "@/app/components/sections/ClientsSection";
 import ContactSection from "@/app/components/sections/ContactSection";
 import Cta from "@/app/components/Cta";
+import CultureSection from "@/app/components/sections/CultureSection";
 import Info from "@/app/components/InfoSection";
 import React from "react";
 import ServicesSection from "@/app/components/sections/ServicesSection";
@@ -28,6 +29,7 @@ const Blocks: BlocksType = {
   contactSection: ContactSection,
   servicesSection: ServicesSection,
   clientsSection: ClientsSection,
+  cultureSection: CultureSection,
 };
 
 /**

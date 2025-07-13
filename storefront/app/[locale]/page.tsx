@@ -65,19 +65,6 @@ export default async function Page(props: Props) {
         </FadeIn>
       </Container>
 
-      {/* <Clients /> */}
-
-      {/* <Testimonials /> */}
-
-      {/* <Testimonial
-        className="mt-24 sm:mt-32 lg:mt-40"
-        client={{ name: "Phobia", logo: "" }}
-      >
-        The team at Studio went above and beyond with our onboarding, even
-        finding a way to access the user’s microphone without triggering one of
-        those annoying permission dialogs.
-      </Testimonial> */}
-
       <PageBuilderPage page={page as GetPageQueryResult} />
     </>
   );

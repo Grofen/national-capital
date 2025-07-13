@@ -8,7 +8,6 @@ import {
 } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
 import { notFound } from "next/navigation";
-import { Container } from "@/app/components/Container";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 type Props = {
@@ -74,9 +73,5 @@ export default async function Page(props: Props) {
     return notFound();
   }
 
-  return (
-    <Container>
-      <PageBuilderPage page={page as GetPageQueryResult} />
-    </Container>
-  );
+  return <PageBuilderPage page={page as GetPageQueryResult} />;
 }
